@@ -32,7 +32,7 @@ const SideBar = () => {
   };
  const menuItems = dashboaedItems[user?.role] || [];  
     return (
-        <div className="flex bg-gray-100 min-h-screen mr-8">
+        <div className="flex bg-red-100 min-h-screen mr-8">
           <div className="lg:hidden p-4 absolute top-0 left-0 z-50">
    <button onClick={toggleSidebar}
 className="p-2 rounded-md bg-white shadow-md text-gray-700 hover:bg-gray-50 focus:outline-none">
@@ -60,7 +60,7 @@ className="p-2 rounded-md bg-white shadow-md text-gray-700 hover:bg-gray-50 focu
     <a key={index}
     href={item.href}
 className="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-red-500 hover:text-white transition-all group">
-<div className="text-slate-400 group-hover:text-white transition-colors">
+<div className="text-slate-500 group-hover:text-white transition-colors">
     {item.icon}
     <span className="font-medium">{item.name}</span>
 </div>

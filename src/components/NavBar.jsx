@@ -3,11 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
 import Image from "next/image";
+import { MdDashboard } from "react-icons/md";
 
 export default function Navbar() {
   const router = useRouter();
@@ -115,7 +116,7 @@ export default function Navbar() {
                 href={`/dashboard/${session.user.role}`}
                 className="flex items-center gap-2 px-4 py-2 text-slate-300 hover:bg-white/5"
               >
-                <FaUser />
+                <MdDashboard />
                 Dashboard
               </Link>
 
