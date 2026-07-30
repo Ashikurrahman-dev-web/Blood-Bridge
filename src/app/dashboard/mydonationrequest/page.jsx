@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {Pagination, Table} from "@heroui/react";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 export default function MyDonationRequests(){
 const {data: session} = useSession();
 const user = session?.user;
@@ -16,7 +17,7 @@ const fetchRequest = useCallback(async()=>{
   if(!user?.email) return;
   try{
     setLoading(true)
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/my-donation-requests?email=${user.email}&status=${statusFilter}&page${page}`)
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/my-donation-requests?email=${user.email}&status=${statusFilter}&page=${page}`)
 const data = await res.json();
 setRequests(data.requests);
 setTotalPage(data.totalPage || 1)
@@ -30,6 +31,33 @@ console.log(error)
 useEffect(()=>{
     fetchRequest()
 },[fetchRequest]);
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedDeleteId, setSelectedDeleteId] = useState(null)
+const openDeleteModal = (id)=>{
+  setSelectedDeleteId(id)
+  setIsModalOpen(true);
+}
+const handleDelete = async()=>{
+try{
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${selectedDeleteId}`,
+  {
+    method: 'DELETE',
+  }
+);
+const data = await res.json()
+if(data.deletedCount > 0){
+setRequests((prev)=> prev.filter(
+  (req) => req._id !== selectedDeleteId
+));  
+}
+setIsModalOpen(false);
+setSelectedDeleteId(null)
+toast.success('Delete Confirmed');
+}catch(error){
+console.log(error);
+toast.error('Delete Failed')
+}
+};
 const getStatusClass = (status)=>{
   switch(status){
     case "pending":
@@ -44,7 +72,7 @@ const getStatusClass = (status)=>{
 };
 const pages = [];
 for(let i=1; i<=totalPage; i++){
-pages.push(1)
+pages.push(i)
 }
 return(
 <div className="max-w-6xl mx-auto p-5">
@@ -80,7 +108,7 @@ setPage(1)
             <Table.Column isRowHeader>Recipient Name</Table.Column>
             <Table.Column>Donation Date</Table.Column>
             <Table.Column>Status</Table.Column>
-            <Table.Column>Actions</Table.Column>
+            <Table.Column className={`text-center`}>Actions</Table.Column>
            </Table.Header>
           <Table.Body>
            {
@@ -91,31 +119,22 @@ setPage(1)
 <Table.Cell className={`${getStatusClass(request.donationStatus)}`}>{request.donationStatus}</Table.Cell>
 <Table.Cell>
    <div className="flex justify-center gap-3">
-                        <Link
-                          href={`/dashboard/donation-request/view/${request._id}`}
-                        >
+                <Link href={`/dashboard/donation-request/view/${request._id}`}>
                           <Eye
                             size={18}
                             className="text-blue-600"
                           />
                         </Link>
-
-                        {request.donationStatus ===
-                          "pending" && (
+     {request.donationStatus === "pending" && (
                           <>
-                            <Link
-                              href={`/dashboard/donation-request/edit/${request._id}`}
-                            >
+                    <Link href={`/dashboard/donation-request/edit/${request._id}`}>
                               <Edit
                                 size={18}
                                 className="text-green-600"
                               />
                             </Link></>)}
-
-                            <button
-                              
-                            >
-                              <Trash2
+                   <button>
+                        <Trash2 onClick={()=>openDeleteModal(request._id)}
                                 size={18}
                                 className="text-red-600 cursor-pointer"
                               />
@@ -134,9 +153,7 @@ setPage(1)
           </Pagination.Summary>
           <Pagination.Content>
             <Pagination.Item>
-              <Pagination.Previous
-            isDisabled={page===1}
-              >
+              <Pagination.Previous isDisabled={page===1}>
 <Link className="flex gap-1" href={`/dashboard/mydonationrequest?page=${page-1}`}>
                 <Pagination.PreviousIcon />
                 Prev
@@ -153,9 +170,7 @@ setPage(1)
               </Link>
             ))}
             <Pagination.Item>
-              <Pagination.Next
-             isDisabled={page===totalPage}   
-              >
+              <Pagination.Next isDisabled={page===totalPage}>
                 <Link className="flex gap-1" href={`/dashboard/mydonationrequest?page=${page-1}`}>
                 Next
                 </Link>
@@ -167,6 +182,30 @@ setPage(1)
       </Table.Footer>    
   </Table>  )}
 </div>
+ {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 dynamic-modal">
+            <h3 className="text-lg font-bold text-gray-900 mb-1">Delete Donation Request?</h3>
+            <p className="text-gray-600 text-sm mb-5">
+        Are you sure you want to delete this donation request? This action cannot be reverted.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setIsModalOpen(false)}
+className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleDelete}
+className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-medium text-sm rounded-lg transition-colors cursor-pointer"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 </div>
 )    
 }
