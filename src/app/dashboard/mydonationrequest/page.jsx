@@ -154,26 +154,34 @@ setPage(1)
           <Pagination.Content>
             <Pagination.Item>
               <Pagination.Previous isDisabled={page===1}>
-<Link className="flex gap-1" href={`/dashboard/mydonationrequest?page=${page-1}`}>
                 <Pagination.PreviousIcon />
-                Prev
-                </Link>
+<button
+  disabled={page === 1}
+  onClick={() => setPage(page - 1)}
+>
+  Prev
+</button>
               </Pagination.Previous>
             </Pagination.Item>
            {pages.map((p) => (
-              <Link key={p} href={`/dashboard/mydonationrequest?page=${p}`}>
-              <Pagination.Item >
-<Pagination.Link isActive={p === page} className={`${p === page ? "bg-red-300":""}`}>
-                  {p}
-                </Pagination.Link>
-              </Pagination.Item>
-              </Link>
-            ))}
+  <button
+    key={p}
+    onClick={() => setPage(p)}
+    className={`px-3 py-1 rounded ${
+p === page ? "bg-red-500 rounded-full cursor-pointer text-white" : "bg-gray-200 cursor-pointer"
+    }`}
+  >
+    {p}
+  </button>
+))}
             <Pagination.Item>
               <Pagination.Next isDisabled={page===totalPage}>
-                <Link className="flex gap-1" href={`/dashboard/mydonationrequest?page=${page-1}`}>
-                Next
-                </Link>
+          <button
+  disabled={page === totalPage}
+  onClick={() => setPage(page + 1)}
+>
+  Next
+</button>      
                 <Pagination.NextIcon />
               </Pagination.Next>
             </Pagination.Item>
