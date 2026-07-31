@@ -13,8 +13,7 @@ useEffect(() => {
   const fetchRequest = async () => {
     try {
       if (!id) return;
-
-      const res = await fetch(
+const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`);
 
       if (!res.ok) {
@@ -39,13 +38,14 @@ useEffect(() => {
   fetchRequest();
 }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-60">
-        <span className="text-gray-500">Loading...</span>
-      </div>
-    );
-  }
+if(loading){
+return (
+    <div className="flex justify-center items-center min-h-screen">
+<div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin">
+ </div>
+    </div>
+  );    
+};  
 
  if (!request || request.message) {
     return (

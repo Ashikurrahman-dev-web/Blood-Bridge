@@ -2,12 +2,14 @@
 import districtsData from "@/data/districts.json";
 import upazilasData from "@/data/upazilas.json";
 import { useSession } from '@/lib/auth-client';
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 
 const CreatePage = () => {
   const  {data: session} = useSession();
   const user = session?.user;
+  const router = useRouter();
   const [isRequest, setIsRequest] = useState(false)
 const [selectedDistrict, setSelectedDistrict] = useState("");
 const [filteredUpazilas, setFilteredUpazilas] = useState([]);
@@ -79,8 +81,8 @@ if(data.success){
         donationTime: "",
         requestMessage: "",
     });
-    
-   toast.success("Request Successful"); 
+    toast.success("Request Successful");
+   router.push('/dashboard/mydonationrequest') 
 }
   } catch(error){
 console.log(error);
