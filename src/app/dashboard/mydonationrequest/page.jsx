@@ -132,13 +132,14 @@ setPage(1)
                                 size={18}
                                 className="text-green-600"
                               />
-                            </Link></>)}
-                   <button>
+                            </Link>
+<button>
                         <Trash2 onClick={()=>openDeleteModal(request._id)}
                                 size={18}
                                 className="text-red-600 cursor-pointer"
                               />
-                            </button>
+                            </button>    </>)}
+                   
                           </div>
 </Table.Cell>
                 </Table.Collection>

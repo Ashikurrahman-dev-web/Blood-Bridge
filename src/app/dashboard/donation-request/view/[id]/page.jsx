@@ -60,16 +60,6 @@ return (
   return (
     <div className="max-w-4xl mx-auto">
 
-      <div className="mb-6">
-        <Link
-          href="/dashboard/mydonationrequest"
-          className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-medium"
-        >
-          <ArrowLeft size={18} />
-          Back
-        </Link>
-      </div>
-
       <div className="bg-red-200 rounded-xl shadow border p-8">
 
         <div className="flex justify-between items-center mb-8">

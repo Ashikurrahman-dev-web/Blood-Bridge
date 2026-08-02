@@ -169,14 +169,14 @@ await authClient.signOut();
             <select
               {...register("bloodGroup", { required: "Blood group is required" })}
               defaultValue=""
-              className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
+className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
             >
               <option value="" disabled>Choose group</option>
               {bloodGroups.map((g) => (
                 <option key={g} value={g}>{g}</option>
               ))}
             </select>
-            {errors.bloodGroup && <p className="text-red-500 text-xs">{errors.bloodGroup.message}</p>}
+      {errors.bloodGroup && <p className="text-red-500 text-xs">{errors.bloodGroup.message}</p>}
           </div>
 
           {/* District */}
@@ -230,7 +230,7 @@ className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-
                 placeholder="Password"
               />
               <button type="button" onClick={() => setIsShowPassword(!isShowPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-slate-400">
-                {isShowPassword ? <FaEyeSlash /> : <FaEye />}
+                {isShowPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
             {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
@@ -246,7 +246,7 @@ className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-
                 placeholder="Re-enter password"
               />
               <button type="button" onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-slate-400">
-                {isShowConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {isShowConfirmPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
             {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword.message}</p>}

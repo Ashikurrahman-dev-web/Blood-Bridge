@@ -122,7 +122,7 @@ export default function Navbar() {
 
               <button
                 onClick={handleLogout}
-  className="w-full flex items-center gap-2 px-4 py-2 text-red-400 hover:bg-red-500/10"
+  className="w-full flex items-center gap-2 px-4 py-2 text-red-400 hover:bg-red-500/10 cursor-pointer"
               >
                 <FaSignOutAlt />
                 Logout

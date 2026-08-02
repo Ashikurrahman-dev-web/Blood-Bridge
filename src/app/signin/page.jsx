@@ -78,7 +78,7 @@ setLoading(false);
                         placeholder="Password"
                       />
 <button type="button" onClick={() => setIsShowPassword(!isShowPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-slate-400">
-                        {isShowPassword ? <FaEyeSlash /> : <FaEye />}
+                        {isShowPassword ? <FaEye /> : <FaEyeSlash />}
                       </button>
                     </div>
                     {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
