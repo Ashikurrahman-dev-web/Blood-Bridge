@@ -27,13 +27,16 @@ console.log('total', data.totalPage)
     setLoading(false)
 }
 };
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedDeleteId, setSelectedDeleteId] = useState(null);
+const openDeleteModal = (id)=>{
+  setSelectedDeleteId(id);
+  setIsModalOpen(true);
+}
 const handleDelete = async (id) => {
-    
-const confirmDelete = confirm("Are you sure you want to delete this request?");
-if (!confirmDelete) return;
 try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${selectedDeleteId}`,
         {
           method: "DELETE",
         }
@@ -42,8 +45,10 @@ try {
       const data = await res.json();
 
       if (data.deletedCount > 0) {
+setRequests((prev)=> prev.filter((req)=> req._id !== selectedDeleteId));
+setSelectedDeleteId(null);
+setIsModalOpen(false);        
         toast.success("Request Deleted");
-        fetchRequest();
       }
     } catch (error) {
       console.log(error);
@@ -167,7 +172,7 @@ className="cursor-pointer flex items-center gap-1 bg-rose-600 hover:bg-rose-700 
                           />
                           </Link>
 <button>
-<Trash2 onClick={()=> handleDelete(request._id)}
+<Trash2 onClick={()=> openDeleteModal(request._id)}
 size={18}
 className="text-red-600 cursor-pointer"
 /> 
@@ -205,7 +210,31 @@ className="text-red-600 cursor-pointer"
     </div> 
 </>    
 )}    
-    </div>           
+    </div>
+{isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 dynamic-modal">
+            <h3 className="text-lg font-bold text-gray-900 mb-1">Delete Donation Request?</h3>
+            <p className="text-gray-600 text-sm mb-5">
+        Are you sure you want to delete this donation request? This action cannot be reverted.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setIsModalOpen(false)}
+className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleDelete}
+className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-medium text-sm rounded-lg transition-colors cursor-pointer"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}               
 </div>
 )    
 }

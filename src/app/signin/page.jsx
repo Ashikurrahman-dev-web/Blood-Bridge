@@ -17,7 +17,6 @@ const onSubmit = async(data)=>{
 setLoading(true);
 try{
 const {data:signInData, error: signInError } = await authClient.signIn.email({
-name: data.name,
 email: data.email,
 password: data.password,
 callbackURL: "/",
@@ -40,17 +39,7 @@ setLoading(false);
               <h1 className="text-3xl font-bold mb-6 text-black">Sign In</h1>
         
               <Form className="flex w-full flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-                {/* Name Field */}
-                <div className="flex flex-col gap-1">
-                  <Label className="text-xs text-black font-semibold">Name</Label>
-                  <Input
-                    {...register("name", { required: "Name is required" })}
-                    placeholder="Enter your name"
-                    type="text"
-                  />
-                  {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
-                </div>
-        
+                
                 {/* Email Field */}
                 <div className="flex flex-col gap-1">
                   <Label className="text-xs text-black font-semibold">Email</Label>

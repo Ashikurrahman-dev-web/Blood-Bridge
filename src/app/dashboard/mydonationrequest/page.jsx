@@ -1,7 +1,7 @@
 "use client"
 import { useSession } from "@/lib/auth-client"
 import { useCallback, useEffect, useState } from "react";
-import {Pagination, Table} from "@heroui/react";
+import { Pagination, Table} from "@heroui/react";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -154,14 +154,9 @@ setPage(1)
           </Pagination.Summary>
           <Pagination.Content>
             <Pagination.Item>
-              <Pagination.Previous isDisabled={page===1}>
+<Pagination.Previous isDisabled={page===1} onClick={() => setPage(page - 1)}>
                 <Pagination.PreviousIcon />
-<button
-  disabled={page === 1}
-  onClick={() => setPage(page - 1)}
->
-  Prev
-</button>
+ Prev
               </Pagination.Previous>
             </Pagination.Item>
            {pages.map((p) => (
@@ -176,13 +171,8 @@ p === page ? "bg-red-500 rounded-full cursor-pointer text-white" : "bg-gray-200 
   </button>
 ))}
             <Pagination.Item>
-              <Pagination.Next isDisabled={page===totalPage}>
-          <button
-  disabled={page === totalPage}
-  onClick={() => setPage(page + 1)}
->
-  Next
-</button>      
+<Pagination.Next isDisabled={page===totalPage} onClick={() => setPage(page + 1)}>
+  Next    
                 <Pagination.NextIcon />
               </Pagination.Next>
             </Pagination.Item>

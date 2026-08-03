@@ -2,14 +2,14 @@
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 
-export default function AdminDashboardHome(){
+export default function VolunteerDashboardHome(){
     const {data: session} = useSession();
     const user = session?.user;
  return(
 <div className="space-y-8">
     <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 text-white shadow-lg">
         <h1 className="text-3xl md:text-4xl font-bold">
-          Welcome Back, {user?.name || "Admin"} 👋
+          Welcome Back, {user?.name || "Volunteer"} 👋
         </h1>
 
         <p className="mt-2 text-red-100">

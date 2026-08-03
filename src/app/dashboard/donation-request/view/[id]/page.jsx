@@ -181,35 +181,6 @@ return (
           </div>
         </div>
 
-        {request.donationStatus === "inprogress" &&
-          request.donorName && (
-            <div className="mt-8 border-t pt-6">
-              <h3 className="font-bold text-lg mb-4">
-                Donor Information
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Donor Name
-                  </p>
-                  <p className="font-semibold">
-                    {request.donorName}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Donor Email
-                  </p>
-                  <p className="font-semibold">
-                    {request.donorEmail}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
       </div>
     </div>
   );
