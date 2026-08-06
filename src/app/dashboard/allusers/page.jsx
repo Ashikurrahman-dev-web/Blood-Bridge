@@ -6,12 +6,13 @@ import toast from 'react-hot-toast';
 export default function AllUsersPage(){
 const [users, setUsers] = useState([]);
 const [statusFilter, setStatusFilter] = useState('all');
+const [roleStatus, setRoleStatus] = useState('all')
 const [loading, setLoading] = useState(true);
 const [dropdownOpen, setDropdownOpen] = useState(null);
 const dropdownRef = useRef(null);
 const fetchUsers = async () => {
  try{
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users?status=${statusFilter}`);
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users?status=${statusFilter}&roleVisitor=${roleStatus}`);
 const data = await res.json();
 setUsers(data);
 console.log('users', data);
@@ -23,7 +24,7 @@ console.log('users', data);
 };
 useEffect(() => {
     fetchUsers();
-}, [statusFilter]);
+}, [statusFilter] [roleStatus]);
 const updateStatus = async (id, status) => {
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users/status/${id}`,
@@ -79,18 +80,29 @@ return (
         <h1 className="text-3xl text-red-500 font-bold">
           All Users
         </h1>
-
+<div className='flex gap-3'>
+  <select
+  value={roleStatus}
+  onChange={(e)=>
+setRoleStatus(e.target.value)}
+className="border px-4 py-2 rounded-lg"
+  >
+<option value='all'>All Users</option>
+<option value='volunteer'>Volunteer</option>
+<option value='donor'>Donor</option>
+  </select>
         <select
           value={statusFilter}
           onChange={(e) =>
             setStatusFilter(e.target.value)
           }
-          className="border px-4 py-2 rounded-lg text-white"
+          className="border px-4 py-2 rounded-lg"
         >
           <option value="all">All Users</option>
           <option value="active">Active</option>
           <option value="blocked">Blocked</option>
         </select>
+        </div>
       </div>
 
       <div className="bg-red-200 rounded-xl shadow overflow-x-auto">

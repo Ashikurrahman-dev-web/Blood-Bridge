@@ -3,13 +3,85 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Eye } from "lucide-react";
+const bloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-",];
+const allDistrict = ["Dhaka","Barisal","Barguna","Patuakhali","Pirojpur","Bhola","Jhalakathi","Feni",
+"Brahmanbaria","Rangamati","Noakhali","Chandpur","Lakshmipur","Comilla","Chattogram","Coxsbazar",
+"Khagrachhari","Bandarban","Sirajganj","Pabna","Bogura","Rajshahi","Natore","Joypurhat","Chapainawabganj",
+"Naogaon","Jashore","Satkhira","Meherpur","Narail","Chuadanga","Kushtia","Magura","Khulna","Bagerhat",
+"Jhenaidah","Sylhet","Moulvibazar","Habiganj","Sunamganj","Narsingdi","Gazipur","Shariatpur","Narayanganj",
+"Tangail","Kishoreganj","Manikganj","Munshiganj","Rajbari","Madaripur","Gopalganj","Faridpur","Panchagarh",
+"Dinajpur","Lalmonirhat","Nilphamari","Gaibandha","Thakurgaon","Rangpur","Kurigram","Sherpur",
+"Mymensingh","Jamalpur","Netrokona",];
+const allUpazila = ["Debidwar","Barura","Brahmanpara","Chandina","Chauddagram","Daudkandi","Homna",
+"Laksam","Muradnagar","Nangalkot","Comilla Sadar","Meghna","Monohargonj","Sadarsouth","Titas","Burichang",
+"Lalmai","Chhagalnaiya","Feni Sadar","Sonagazi","Fulgazi","Parshuram","Daganbhuiyan","Brahmanbaria Sadar",
+"Kasba","Nasirnagar","Sarail","Ashuganj","Akhaura","Nabinagar","Bancharampur","Bijoynagar","Rangamati Sadar",
+"Kaptai","Kawkhali","Baghaichari","Barkal","Langadu","Rajasthali","Belaichari","Juraichari","Naniarchar",
+"Noakhali Sadar","Companiganj","Begumganj","Hatia","Subarnachar","Kabirhat","Senbug","Chatkhil",
+"Sonaimori","Haimchar","Kachua","Shahrasti","Chandpur Sadar","Matlab South","Hajiganj","Matlab North",
+"Faridgonj","Lakshmipur Sadar","Kamalnagar","Raipur","Ramgati","Ramganj","Rangunia","Sitakunda",
+"Mirsharai","Patiya","Sandwip","Banshkhali","Boalkhali","Anwara","Chandanaish","Satkania","Lohagara",
+"Hathazari","Fatikchhari","Raozan","Karnafuli","Coxsbazar Sadar","Chakaria","Kutubdia","Ukhiya",
+"Moheshkhali","Pekua","Ramu","Teknaf","Khagrachhari Sadar","Dighinala","Panchari","Laxmichhari",
+"Mohalchari","Manikchari","Ramgarh","Matiranga","Guimara","Bandarban Sadar","Alikadam","Naikhongchhari",
+"Rowangchhari","Lama","Ruma","Thanchi","Belkuchi","Chauhali","Kamarkhand","Kazipur","Raigonj",
+"Shahjadpur","Sirajganj Sadar","Tarash","Ullapara","Sujanagar","Ishurdi","Bhangura","Pabna Sadar",
+"Bera","Atghoria","Chatmohar","Santhia","Faridpur","Kahaloo","Bogra Sadar","Shariakandi","Shajahanpur",
+"Dupchanchia","Adamdighi","Nondigram","Sonatala","Dhunot","Gabtali","Sherpur","Shibganj","Paba","Durgapur",
+"Mohonpur","Charghat","Puthia","Bagha","Godagari","Tanore","Bagmara","Natore Sadar","Singra","Baraigram",
+"Bagatipara","Lalpur","Gurudaspur","Naldanga","Akkelpur","Kalai","Khetlal","Panchbibi","Joypurhat Sadar",
+"Chapainawabganj Sadar","Gomostapur","Nachol","Bholahat","Shibganj","Mohadevpur","Badalgachi","Patnitala",
+"Dhamoirhat","Niamatpur","Manda","Atrai","Raninagar","Naogaon Sadar","Porsha","Sapahar","Manirampur",
+"Abhaynagar","Bagherpara","Chougachha","Jhikargacha","Keshabpur","Jessore Sadar","Sharsha","Assasuni",
+"Debhata","Kalaroa","Satkhira Sadar","Shyamnagar","Tala","Kaliganj","Mujibnagar","Meherpur Sadar","Gangni",
+"Narail Sadar","Lohagara","Kalia","Chuadanga Sadar","Alamdanga","Damurhuda","Jibannagar","Kushtia Sadar",
+"Kumarkhali","Khoksa","Mirpur","Daulatpur","Bheramara","Shalikha","Sreepur","Magura Sadar","Mohammadpur",
+"Paikgasa","Fultola","Digholia","Rupsha","Terokhada","Dumuria","Botiaghata","Dakop","Koyra","Fakirhat",
+"Bagerhat Sadar","Mollahat","Sarankhola","Rampal","Morrelganj","Kachua","Mongla","Chitalmari",
+"Jhenaidah Sadar","Shailkupa","Harinakundu","Kaliganj","Kotchandpur","Moheshpur","Jhalakathi Sadar",
+"Kathalia","Nalchity","Rajapur", "Bauphal","Patuakhali Sadar","Dumki","Dashmina","Kalapara","Mirzaganj",
+"Galachipa","Rangabali","Pirojpur Sadar","Nazirpur","Kawkhali","Zianagar","Bhandaria","Mathbaria",
+"Nesarabad","Barisal Sadar","Bakerganj","Babuganj","Wazirpur","Banaripara","Gournadi","Agailjhara",
+"Mehendiganj","Muladi","Hizla","Bhola Sadar","Borhan Sddin","Charfesson","Doulatkhan","Monpura",
+"Tazumuddin","Lalmohan","Amtali","Barguna Sadar","Betagi","Bamna","Pathorghata","Taltali","Balaganj",
+"Beanibazar","Bishwanath","Companiganj","Fenchuganj","Golapganj","Gowainghat","Jaintiapur","Kanaighat",
+"Sylhet Sadar","Zakiganj","Dakshinsurma","Osmaninagar","Barlekha","Kamolganj","Kulaura","Moulvibazar Sadar",
+"Rajnagar","Sreemangal","Juri","Nabiganj","Bahubal","Ajmiriganj","Baniachong","Lakhai","Chunarughat",
+"Habiganj Sadar","Madhabpur","Sunamganj Sadar","South Sunamganj","Bishwambarpur","Chhatak","Jagannathpur",
+"Dowarabazar","Tahirpur","Dharmapasha","Jamalganj","Shalla","Derai","Belabo","Monohardi","Narsingdi Sadar",
+"Palash","Raipura","Shibpur","Kaliganj","Kaliakair","Kapasia","Gazipur Sadar","Sreepur","Shariatpur Sadar",
+"Naria","Zajira","Gosairhat","Bhedarganj","Damudya","Araihazar", "Bandar","Narayanganj Sadar","Rupganj",
+"Sonargaon","Basail","Bhuapur","Delduar","Ghatail","Gopalpur","Madhupur","Mirzapur","Nagarpur",
+"Sakhipur","Tangail Sadar","Kalihati","Dhanbari","Itna","Katiadi","Bhairab","Tarail","Hossainpur",
+"Pakundia","Kuliarchar","Kishoreganj Sadar","Karimgonj","Bajitpur","Austagram","Mithamoin","Nikli",
+"Harirampur","Saturia","Manikganj Sadar","Gior","Shibaloy","Doulatpur","Singiar","Savar","Dhamrai",
+"Keraniganj","Nawabganj","Dohar","Munshiganj Sadar","Sreenagar","Sirajdikhan","Louhajanj","Gajaria",
+"Tongibari","Rajbari Sadar","Goalanda","Pangsa","Baliakandi","Kalukhali","Madaripur Sadar","Shibchar",
+"Kalkini","Rajoir","Gopalganj Sadar","Kashiani","Tungipara","Kotalipara","Muksudpur","Faridpur Sadar",
+"Alfadanga","Boalmari","Sadarpur","Nagarkanda","Bhanga","Charbhadrasan","Madhukhali","Saltha",
+"Panchagarh Sadar","Debiganj","Boda","Atwari","Tetulia","Nawabganj","Birganj","Ghoraghat","Birampur",
+"Parbatipur","Bochaganj","Kaharol","Fulbari","Dinajpur Sadar","Hakimpur","Khansama","Birol","Chirirbandar",
+"Lalmonirhat Sadar","Kaliganj","Hatibandha","Patgram","Aditmari","Syedpur","Domar","Dimla","Jaldhaka",
+"Kishorganj","Nilphamari Sadar","Sadullapur","Gaibandha Sadar","Palashbari","Saghata","Gobindaganj",
+"Sundarganj","Phulchari","Thakurgaon Sadar","Pirganj","Ranisankail","Haripur","Baliadangi","Rangpur Sadar",
+"Gangachara","Taragonj","Badargonj","Mithapukur","Pirgonj","Kaunia","Pirgacha","Kurigram Sadar",
+"Nageshwari","Bhurungamari","Phulbari","Rajarhat","Ulipur","Chilmari","Rowmari","Charrajibpur",
+"Sherpur Sadar","Nalitabari","Sreebordi","Nokla","Jhenaigati","Fulbaria","Trishal","Bhaluka","Muktagacha",
+"Mymensingh Sadar","Dhobaura","Phulpur","Haluaghat","Gouripur","Gafargaon","Iswarganj","Nandail",
+"Tarakanda","Jamalpur Sadar","Melandah","Islampur","Dewangonj","Sarishabari","Madarganj","Bokshiganj",
+"Barhatta","Durgapur","Kendua","Atpara","Madan","Khaliajuri","Kalmakanda","Mohongonj","Purbadhala",
+"Netrokona Sadar","Eidgaon","Madhyanagar","Dasar"];
 
 export default function DonationRequestsPage() {
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+const [requests, setRequests] = useState([]);
+const [loading, setLoading] = useState(true);
+const [search, setSearch] = useState("");
+const [query, setQuery] = useState("");
+const [bloodGroup, setBloodGroup] = useState('all');
+const [district, setDistrict] = useState('all');
+const [upazila, setUpazila] = useState('all');
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/public-donation-requests`)
+fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/public-donation-requests?blood=${bloodGroup}&district=${district}&upazila=${upazila}`)
       .then((res) => res.json())
       .then((data) => {
         setRequests(data);
@@ -19,63 +91,105 @@ export default function DonationRequestsPage() {
         console.log(error);
         setLoading(false);
       });
-  }, []);
-
-  if (loading) {
+},[bloodGroup,district,upazila]);
+const filteredRequest = requests.filter((request) =>
+request?.recipientDistrict.toLowerCase().includes(query.toLowerCase())||
+request?.recipientName.toLowerCase().includes(query.toLowerCase())||
+request?.donationDate.includes(query)||
+request?.donationTime.includes(query)||
+request?.bloodGroup.toLowerCase().includes(query.toLowerCase())||
+request?.recipientUpazila.toLowerCase().includes(query.toLowerCase())
+);
+const handleSearch = ()=>{
+  setQuery(search)
+};
+if(loading) {
     return (
       <div className="text-center py-20">
         Loading donation requests...
       </div>
     );
-  }
-
+  };
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold mb-8">
-        Blood Donation Requests
+       Donated Blood
       </h1>
-
       {requests.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
           No Pending Donation Requests Found
         </div>
-      ) : (
+      ) : (<div>
+<div className="mb-6 flex gap-2">
+  <input
+  type="text"
+  value={search}
+  onChange={(e)=> setSearch(e.target.value)}
+className="w-full md:w-1/2 border px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[red]"
+  />
+ <button
+ onClick={handleSearch}
+ className="bg-red-500 text-white px-6 py-2 rounded-xl cursor-pointer">Search</button>
+</div>
+<div className="flex gap-5 mb-5">
+  <select
+  value={bloodGroup}
+  onChange={(e)=>setBloodGroup(e.target.value)}
+  className="border px-4 py-2 rounded-lg">
+    <option value="all">All Blood Group</option>
+{bloodGroups.map((blood)=>(
+<option key={blood} value={blood}>{blood}</option>
+))}
+  </select>
+<select
+value={district}
+onChange={(e)=>setDistrict(e.target.value)}
+className="border px-4 py-2 rounded-lg">
+<option value="all">All District</option>
+{allDistrict.map((allDistric)=>(
+  <option key={allDistric} value={allDistric}>{allDistric}</option>
+))}  
+  </select>
+ <select
+value={upazila}
+onChange={(e)=>setUpazila(e.target.value)}
+ className="border px-4 py-2 rounded-lg">
+ <option value="all">All Upazila</option>
+ {[...new Set(allUpazila)].map((allUpazil)=>(
+  <option key={allUpazil} value={allUpazil}>{allUpazil}</option>
+ ))}
+  </select>  
+  </div>      
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {requests.map((request) => (
+          {filteredRequest.map((filter) => (
             <div
-              key={request._id}
-              className="bg-white rounded-xl shadow border p-6"
-            >
+              key={filter._id}
+              className="bg-white rounded-xl shadow border p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="font-bold text-lg">
-                  {request.recipientName}
+                  {filter.recipientName}
                 </h2>
-
         <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {request.bloodGroup}
+                  {filter.bloodGroup}
                 </span>
               </div>
-
               <div className="space-y-2 text-gray-600 text-sm">
                 <p>
                   <strong>Location:</strong>{" "}
-                  {request.recipientDistrict},{" "}
-                  {request.recipientUpazila}
+                  {filter.recipientDistrict},{" "}
+                  {filter.recipientUpazila}
                 </p>
-
                 <p>
                   <strong>Date:</strong>{" "}
-                  {request.donationDate}
+                  {filter.donationDate}
                 </p>
-
                 <p>
                   <strong>Time:</strong>{" "}
-                  {request.donationTime}
+                  {filter.donationTime}
                 </p>
               </div>
-
               <Link
-                href={`/request/${request._id}`}
+                href={`/request/${filter._id}`}
 className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
               >
                 <Eye size={18} />
@@ -84,7 +198,7 @@ className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-
             </div>
           ))}
         </div>
-      )}
+    </div>  )}
     </div>
   );
-}
+} 
