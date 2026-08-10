@@ -62,7 +62,7 @@ export default function Navbar() {
             : "text-slate-300 hover:text-white"
         }`}
       >
-        Donation Requests
+        Blood
       </Link>
 
       {session && (
@@ -77,13 +77,25 @@ export default function Navbar() {
           Funding
         </Link>
       )}
+      {session && (
+        <Link
+          href="/myBooking"
+          className={`text-sm font-medium transition-colors ${
+            pathname.startsWith("/funding")
+              ? "text-red-500 font-semibold"
+              : "text-slate-300 hover:text-white"
+          }`}
+        >
+          My Booking
+        </Link>
+      )}
     </div>
 
     {/* Right Side */}
     <div className="flex items-center gap-3">
 
       {/* Avatar Outside Menu */}
-      {session?.user && (
+      {session?.user && session.user.role !== "patient" &&(
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -131,7 +143,15 @@ export default function Navbar() {
           )}
         </div>
       )}
-
+{session?.user && session.user.role === "patient" && (
+ <button
+                onClick={handleLogout}
+  className="w-full flex items-center gap-2 px-4 py-2 text-red-400 hover:bg-red-500/10 cursor-pointer"
+              >
+                <FaSignOutAlt />
+                Logout
+              </button> 
+)}
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
@@ -178,7 +198,7 @@ className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounde
           onClick={() => setMenuOpen(false)}
           className="text-slate-700"
         >
-          Donation Requests
+          Blood
         </Link>
 
         {session && (
@@ -190,7 +210,24 @@ className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounde
             Funding
           </Link>
         )}
-
+        {session && (
+          <Link
+            href="/myBooking"
+            onClick={() => setMenuOpen(false)}
+            className="text-slate-700"
+          >
+            My Booking
+          </Link>
+        )}
+{session?.user && session.user.role === "patient" && (
+ <button
+                onClick={handleLogout}
+  className=" text-red-400"
+              >
+                <FaSignOutAlt />
+                Logout
+              </button> 
+)}
         {!session && (
           <>
             <Link

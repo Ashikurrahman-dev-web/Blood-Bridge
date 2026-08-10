@@ -76,7 +76,7 @@ const SignUpPage = () => {
         bloodGroup: data.bloodGroup,
         district: districtName,
         upazila: upazilaName,
-        role: "donor",
+        role: data.role,
         status: "active",
         callbackUrl: "/signin",
       });
@@ -169,7 +169,7 @@ await authClient.signOut();
             <select
               {...register("bloodGroup", { required: "Blood group is required" })}
               defaultValue=""
-className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
+className="w-full bg-red-500 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
             >
               <option value="" disabled>Choose group</option>
               {bloodGroups.map((g) => (
@@ -190,7 +190,7 @@ className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-
                 setSelectedDistrict(e.target.value); 
                 setValue("upazila", ""); 
               }}
-              className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
+className="w-full bg-red-500 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition"
             >
               <option value="" disabled>Choose district</option>
               {districts.map((d) => (
@@ -207,7 +207,7 @@ className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-
               {...register("upazila", { required: "Upazila is required" })}
               defaultValue=""
               disabled={!selectedDistrict}
-className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition disabled:opacity-50"
+className="w-full bg-red-500 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition disabled:opacity-50"
             >
               <option value="" disabled>Choose upazila</option>
               {filteredUpazilas.map((u) => (
@@ -217,7 +217,20 @@ className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 h-10 text-
             {errors.upazila && <p className="text-red-500 text-xs">{errors.upazila.message}</p>}
           </div>
         </div>
-
+ {/* Role Field */}
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+<label className="text-xs text-black font-semibold">Select Role *</label>
+<select
+{...register("role", { required: "Role is required" })}
+              defaultValue=""
+className="w-full bg-red-500 border border-white/10 rounded-xl px-3 h-10 text-sm text-white focus:outline-none focus:border-red-500 transition disabled:opacity-50"
+>
+<option value="" disabled>Choose Role</option>  
+<option value="donor" >Donor</option>  
+<option value="patient">Patient</option>  
+</select>
+  {errors.role && <p className="text-red-500 text-xs">{errors.role.message}</p>}
+        </div>
         {/* Passwords */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Password */}

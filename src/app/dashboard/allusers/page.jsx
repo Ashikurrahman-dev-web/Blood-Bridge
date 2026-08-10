@@ -166,6 +166,7 @@ className="border px-4 py-2 rounded-lg"
               ? "bg-purple-100 text-purple-700"
               : user.role === "volunteer"
               ? "bg-blue-100 text-blue-700"
+              : user.role === "donor" ? "bg-orange-100 text-orange-500"
               : "bg-gray-100 text-gray-700"
           }`}
         >
@@ -222,33 +223,39 @@ className="border px-4 py-2 rounded-lg"
               </button>
             ): null}
 
-            {user.role !==
-              "volunteer" &&
-              user.role !== "admin" ? (
-<button className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg mb-1'
-                  key='volunteer'
-                  onClick={() =>
-                    updateRole(
-                      user._id,
-                      "volunteer"
-                    )
-                  }
-                >
-                  Make Volunteer
-                </button>
-              ): user.role !== "donor" && user.role !== "admin" ? (
-    <button className='cursor-pointer bg-yellow-500 text-white px-4 py-2 rounded-lg mb-1'
-                  key='donor'
-                  onClick={() =>
-                    updateRole(
-                      user._id,
-                      "donor"
-                    )
-                  }
-                >
-                  Make Donor
-                </button>): null}
+            {user.role !== "admin" && (
+  <>
+    {user.role !== "volunteer" && (
+      <button
+        className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg mb-1 mr-2'
+        key='volunteer'
+        onClick={() => updateRole(user._id, "volunteer")}
+      >
+        Make Volunteer
+      </button>
+    )}
 
+    {user.role !== "donor" && (
+      <button
+        className='cursor-pointer bg-yellow-500 text-white px-4 py-2 rounded-lg mb-1 mr-2'
+        key='donor'
+        onClick={() => updateRole(user._id, "donor")}
+      >
+        Make Donor
+      </button>
+    )}
+
+    {user.role !== "patient" && (
+      <button
+        className='cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg mb-1'
+        key='patient'
+        onClick={() => updateRole(user._id, "patient")}
+      >
+        Make Patient
+      </button>
+    )}
+  </>
+)}
      </div>)}       
 </div>
       </td>
