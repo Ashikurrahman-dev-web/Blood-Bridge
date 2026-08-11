@@ -48,7 +48,7 @@ export default function Navbar() {
         className={`text-sm font-medium transition-colors ${
           pathname === "/"
             ? "text-red-500 font-semibold"
-            : "text-slate-300 hover:text-white"
+            : "text-slate-500 hover:text-slate-700"
         }`}
       >
         Home
@@ -59,7 +59,7 @@ export default function Navbar() {
         className={`text-sm font-medium transition-colors ${
           pathname.startsWith("/request")
             ? "text-red-500 font-semibold"
-            : "text-slate-300 hover:text-white"
+            : "text-slate-500 hover:text-slate-700"
         }`}
       >
         Blood
@@ -71,7 +71,7 @@ export default function Navbar() {
           className={`text-sm font-medium transition-colors ${
             pathname.startsWith("/funding")
               ? "text-red-500 font-semibold"
-              : "text-slate-300 hover:text-white"
+              : "text-slate-500 hover:text-slate-700"
           }`}
         >
           Funding
@@ -83,7 +83,7 @@ export default function Navbar() {
           className={`text-sm font-medium transition-colors ${
             pathname.startsWith("/funding")
               ? "text-red-500 font-semibold"
-              : "text-slate-300 hover:text-white"
+              : "text-slate-500 hover:text-slate-700"
           }`}
         >
           My Booking
@@ -95,7 +95,7 @@ export default function Navbar() {
     <div className="flex items-center gap-3">
 
       {/* Avatar Outside Menu */}
-      {session?.user && session.user.role !== "patient" &&(
+      {session?.user && (
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -111,30 +111,30 @@ export default function Navbar() {
           </button>
 
           {dropdownOpen && (
-<div className="absolute right-0 mt-3 w-56 bg-slate-900 border border-white/10 rounded-2xl shadow-xl py-2">
-              <div className="px-4 py-2 border-b border-white/10">
-                <p className="text-red-500 text-xs font-bold">
+<div className="absolute right-0 mt-3 w-56 bg-white border border-white/10 rounded-2xl shadow-xl py-2">
+              <div className="px-4 py-2 border-b border-red-200">
+                <p className="text-slate-600 text-xs font-bold">
                   {session.user.role} Account
                 </p>
-                <p className="text-white font-semibold">
+                <p className="text-slate-600 font-semibold">
                   {session.user.name}
                 </p>
-                <p className="text-xs text-slate-400 truncate">
+                <p className="text-xs text-slate-600 truncate">
                   {session.user.email}
                 </p>
               </div>
-
+{session?.user && session.user.role !== "patient" &&(
               <Link
                 href={`/dashboard/${session.user.role}`}
-                className="flex items-center gap-2 px-4 py-2 text-slate-300 hover:bg-white/5"
+                className="flex items-center gap-2 px-4 py-2 text-slate-600"
               >
                 <MdDashboard />
                 Dashboard
               </Link>
-
+)}
               <button
                 onClick={handleLogout}
-  className="w-full flex items-center gap-2 px-4 py-2 text-red-400 hover:bg-red-500/10 cursor-pointer"
+  className="w-full flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-500/10 cursor-pointer"
               >
                 <FaSignOutAlt />
                 Logout
@@ -143,15 +143,6 @@ export default function Navbar() {
           )}
         </div>
       )}
-{session?.user && session.user.role === "patient" && (
- <button
-                onClick={handleLogout}
-  className="w-full flex items-center gap-2 px-4 py-2 text-red-400 hover:bg-red-500/10 cursor-pointer"
-              >
-                <FaSignOutAlt />
-                Logout
-              </button> 
-)}
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
@@ -164,7 +155,7 @@ export default function Navbar() {
       {!session && (
         <div className="hidden md:flex items-center gap-3">
           <Link href="/signin">
-            <button className="text-slate-300 hover:text-slate-500 cursor-pointer">
+            <button className="text-slate-500 hover:text-slate-700 cursor-pointer">
               Login
             </button>
           </Link>
@@ -219,21 +210,12 @@ className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounde
             My Booking
           </Link>
         )}
-{session?.user && session.user.role === "patient" && (
- <button
-                onClick={handleLogout}
-  className=" text-red-400"
-              >
-                <FaSignOutAlt />
-                Logout
-              </button> 
-)}
         {!session && (
           <>
             <Link
               href="/signin"
               onClick={() => setMenuOpen(false)}
-              className="text-slate-300"
+              className="text-slate-700"
             >
               Login
             </Link>

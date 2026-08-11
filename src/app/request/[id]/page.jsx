@@ -84,8 +84,8 @@ if(res.ok){
 
         <div className="grid md:grid-cols-2 gap-6">
 <div>
-  <p className="font-semibold">Requester Name</p>
-  <p>{request.requesterName}</p>
+  <p className="font-semibold">Recipient Name</p>
+  <p>{request.recipientName}</p>
 </div>
 
 <div>

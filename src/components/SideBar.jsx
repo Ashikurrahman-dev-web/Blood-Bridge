@@ -3,6 +3,7 @@ import { useSession } from '@/lib/auth-client';
 import { Columns4, GitPullRequest, Home, Menu, Settings, UserRoundPlus, UsersRound, X } from 'lucide-react';
 import React, { useState } from 'react';
 import Logo from './Logo';
+import { MdMessage } from 'react-icons/md';
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,7 @@ const SideBar = () => {
   { name: 'ProfileSettings', icon: <Settings className="w-5 h-5" />, href: '/dashboard/profile' },
       { name: 'All Users', icon: <UsersRound className="w-5 h-5" />, href: '/dashboard/allusers' }, 
 { name: 'All Blood Donation', icon: <Columns4 className="w-5 h-5" />, href: '/dashboard/allblooddonationadmin'},               
+{ name: 'Message', icon: <MdMessage className="w-5 h-5" />, href: '/dashboard/message'},               
     ]   
   };
  const menuItems = dashboaedItems[user?.role] || [];  
@@ -60,7 +62,7 @@ className="p-2 rounded-md bg-white shadow-md text-gray-700 hover:bg-gray-50 focu
     <a key={index}
     href={item.href}
 className="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-red-500 hover:text-white transition-all group">
-<div className="text-slate-500 group-hover:text-white transition-colors">
+<div className="text-slate-500 group-hover:text-white transition-colors flex gap-1">
     {item.icon}
     <span className="font-medium">{item.name}</span>
 </div>

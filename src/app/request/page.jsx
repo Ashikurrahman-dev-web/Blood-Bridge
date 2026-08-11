@@ -164,10 +164,10 @@ onChange={(e)=>setUpazila(e.target.value)}
           {filteredRequest.map((filter) => (
             <div
               key={filter._id}
-              className="bg-white rounded-xl shadow border p-6">
+className="bg-white rounded-xl shadow border border-red-300 p-6 hover:border-red-500 shadow-xl">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="font-bold text-lg">
-                  {filter.recipientName}
+                  {filter.requesterName}
                 </h2>
         <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
                   {filter.bloodGroup}

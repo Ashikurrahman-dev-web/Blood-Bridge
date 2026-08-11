@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { CheckCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function DonationRequestDetails() {
   const { id } = useParams();
@@ -10,7 +10,9 @@ export default function DonationRequestDetails() {
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(true);
 useEffect(() => {
-  const fetchRequest = async () => {
+  fetchRequest();
+}, [id]);
+const fetchRequest = async () => {
     try {
       if (!id) return;
 const res = await fetch(
@@ -34,10 +36,25 @@ const res = await fetch(
       setLoading(false);
     }
   };
-
-  fetchRequest();
-}, [id]);
-
+const handleDone = async(id)=>{
+try{
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking-donation/done/${id}`,{
+    method: "PATCH",
+    headers:{
+        'Content-Type': "application/json"
+    },
+    body: JSON.stringify()
+});
+const data = await res.json();
+if(res.ok){
+    toast.success("Donation Confirmed")
+    fetchRequest()
+}
+}catch(error){
+   console.log(error);
+   toast.error("Something Went Wrong"); 
+}
+};  
 if(loading){
 return (
     <div className="flex justify-center items-center min-h-screen">
@@ -180,7 +197,42 @@ return (
             {request.requestMessage}
           </div>
         </div>
+{request.donationStatus === "booked" &&
+          request.patientName && (
+            <div className="mt-8 border-t pt-6">
+              <h3 className="font-bold text-lg mb-4 text-center">
+                Patient Information
+              </h3>
 
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm text-gray-500">
+                    Patient Name
+                  </p>
+                  <p className="font-semibold">
+                    {request.patientName}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">
+                    Patient Email
+                  </p>
+                  <p className="font-semibold">
+                    {request.patientEmail}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-bold text-red-500">
+If you donate Blood, click this button, otherwise not.
+                  </p>
+<button onClick={()=>handleDone(request._id)}
+className="bg-gray-200 text-green-500 rounded-2xl p-2 cursor-pointer flex items-center gap-0.5">
+   <CheckCircle className="w-3 h-3" />Done</button>                  
+                </div>
+              </div>
+            </div>
+          )}
       </div>
     </div>
   );

@@ -81,6 +81,8 @@ const getStatusClass = (status)=>{
       return "text-green-500"
     case "canceled":
       return "text-red-500"
+      case "booked":
+        return "text-blue-500"
       default:
         return "bg-blue-500 text-white"
   }
