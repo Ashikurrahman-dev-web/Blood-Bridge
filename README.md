@@ -1,4 +1,4 @@
-# 🩸 Blood Donation Management System
+# 🩸 Blood Donation and Purchasing Management System
 
 A full-stack Blood Donation Management System that connects blood donors with recipients, making the blood donation process faster, easier, and more organized.
 
