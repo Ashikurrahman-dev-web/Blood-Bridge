@@ -1,6 +1,6 @@
 "use client"
 import { useSession } from '@/lib/auth-client';
-import { Columns4, GitPullRequest, Home, Menu, Settings, UserRoundPlus, UsersRound, X } from 'lucide-react';
+import { Columns4, GitPullRequest, Home, Menu, Send, Settings, UserRoundPlus, UsersRound, X } from 'lucide-react';
 import React, { useState } from 'react';
 import Logo from './Logo';
 import { MdMessage } from 'react-icons/md';
@@ -12,7 +12,7 @@ const SideBar = () => {
   const toggleSidebar = ()=>{
     setIsOpen(!isOpen); 
   };
-  const dashboaedItems = {
+  const dashboardItems = {
     "donor":[
   {name: 'Home', icon: <Home className='w-5 h-5'/>, href: '/dashboard/donor'},
   {name: 'ProfileSettings', icon: <Settings className='w-5 h-5'/>, href: '/dashboard/profile'},
@@ -22,7 +22,8 @@ const SideBar = () => {
    "volunteer":[
 {name: 'Home', icon: <Home className='w-5 h-5'/>, href: '/dashboard/volunteer'},
   {name: 'ProfileSettings', icon: <Settings className='w-5 h-5'/>, href: '/dashboard/profile'},
-{name: 'All Blood Donation', icon: <Columns4 className="w-5 h-5" />, href: '/dashboard/allblooddonationvolunteer' },  
+{name: 'All Blood Donation', icon: <Columns4 className="w-5 h-5" />, href: '/dashboard/allblooddonationvolunteer' },
+{ name: 'Comment', icon: <Send className="w-5 h-5" />, href: '/dashboard/commentAdmin'},  
    ], 
 "admin":[
   { name: 'Home', icon: <Home className="w-5 h-5" />, href: '/dashboard/admin' }, 
@@ -30,9 +31,10 @@ const SideBar = () => {
       { name: 'All Users', icon: <UsersRound className="w-5 h-5" />, href: '/dashboard/allusers' }, 
 { name: 'All Blood Donation', icon: <Columns4 className="w-5 h-5" />, href: '/dashboard/allblooddonationadmin'},               
 { name: 'Message', icon: <MdMessage className="w-5 h-5" />, href: '/dashboard/message'},               
+{ name: 'Comment', icon: <Send className="w-5 h-5" />, href: '/dashboard/commentAdmin'},               
     ]   
   };
- const menuItems = dashboaedItems[user?.role] || [];  
+ const menuItems = dashboardItems[user?.role] || [];  
     return (
         <div className="flex bg-red-100 min-h-screen mr-8">
           <div className="lg:hidden p-4 absolute top-0 left-0 z-50">

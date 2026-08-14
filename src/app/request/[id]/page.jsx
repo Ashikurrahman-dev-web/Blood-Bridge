@@ -84,8 +84,8 @@ if(res.ok){
 
         <div className="grid md:grid-cols-2 gap-6">
 <div>
-  <p className="font-semibold">Recipient Name</p>
-  <p>{request.recipientName}</p>
+  <p className="font-semibold">Requester Name</p>
+  <p>{request.requesterName}</p>
 </div>
 
 <div>
@@ -96,42 +96,35 @@ if(res.ok){
             <p className="font-semibold">
               Blood Group
             </p>
-            <p>{request.bloodGroup}</p>
+            <p>{request.requesterBloodGroup}</p>
           </div>
 
           <div>
             <p className="font-semibold">
               District
             </p>
-            <p>{request.recipientDistrict}</p>
+            <p>{request.requesterDistrict}</p>
           </div>
 
           <div>
             <p className="font-semibold">
               Upazila
             </p>
-            <p>{request.recipientUpazila}</p>
-          </div>
-
-          <div>
-            <p className="font-semibold">
-              Hospital Name
-            </p>
-            <p>{request.hospitalName}</p>
+            <p>{request.requesterUpazila}</p>
           </div>
 
           <div>
             <p className="font-semibold">
               Donation Date
             </p>
-            <p>{request.donationDate}</p>
+            <p>{new Date(request.createdAt).toLocaleDateString()}</p>
           </div>
 
           <div>
             <p className="font-semibold">
               Donation Time
             </p>
-            <p>{request.donationTime}</p>
+            <p>{new Date(request.createdAt).toLocaleTimeString()}</p>
           </div>
         </div>
 <div className="grid md:grid-cols-2 gap-6">

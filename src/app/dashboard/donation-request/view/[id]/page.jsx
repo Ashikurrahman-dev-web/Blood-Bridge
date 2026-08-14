@@ -127,58 +127,41 @@ return (
             </p>
           </div>
 
-          <div>
-            <p className="text-sm text-gray-500">Recipient Name</p>
-            <p className="font-semibold">
-              {request.recipientName}
-            </p>
-          </div>
 
           <div>
             <p className="text-sm text-gray-500">Blood Group</p>
             <p className="font-semibold text-red-600">
-              {request.bloodGroup}
+              {request.requesterBloodGroup}
             </p>
           </div>
 
           <div>
             <p className="text-sm text-gray-500">District</p>
             <p className="font-semibold">
-              {request.recipientDistrict}
+              {request.requesterDistrict}
             </p>
           </div>
 
           <div>
             <p className="text-sm text-gray-500">Upazila</p>
             <p className="font-semibold">
-              {request.recipientUpazila}
+              {request.requesterUpazila}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Request Date</p>
+            <p className="font-semibold">
+              {new Date(request.createdAt).toLocaleDateString()}
             </p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500">Hospital Name</p>
+            <p className="text-sm text-gray-500">Request Time</p>
             <p className="font-semibold">
-              {request.hospitalName}
+              {new Date(request.createdAt).toLocaleTimeString()}
             </p>
           </div>
-
-          <div>
-            <p className="text-sm text-gray-500">Donation Date</p>
-            <p className="font-semibold">
-              {request.donationDate}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-sm text-gray-500">Donation Time</p>
-            <p className="font-semibold">
-              {request.donationTime}
-            </p>
-          </div>
-
-        </div>
-
-        <div className="mt-6">
+<div className="mt-6">
           <p className="text-sm text-gray-500 mb-1">
             Full Address
           </p>
@@ -187,6 +170,7 @@ return (
             {request.fullAddress}
           </p>
         </div>
+        </div>   
 
         <div className="mt-6">
           <p className="text-sm text-gray-500 mb-1">

@@ -9,15 +9,11 @@ export default function EditDonationRequest(){
 const {id}= useParams();
 const router = useRouter()
 const [loading,setLoading]=useState(true);
-const [formData, setFormData] = useState({
-     recipientName: "",
-    recipientDistrict: "",
-    recipientUpazila: "",
-    hospitalName: "",
+const [formData, setFormData] = useState({ 
+     requesterDistrict: "",
+    requesterUpazila: "",
     fullAddress: "",
-    bloodGroup: "",
-    donationDate: "",
-    donationTime: "",
+    requesterBloodGroup: "",
     requestMessage: "",
 });
 useEffect(()=>{
@@ -28,14 +24,10 @@ const fetchRequest = async()=>{
  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`)
  const data = await res.json();
  setFormData({
-    recipientName: data.recipientName,
-    recipientDistrict: data.recipientDistrict,
-    recipientUpazila: data.recipientUpazila,
-    hospitalName: data.hospitalName,
+    requesterDistrict: data.requesterDistrict,
+    requesterUpazila: data.requesterUpazila,   
     fullAddress: data.fullAddress,
-    bloodGroup: data.bloodGroup,
-    donationDate: data.donationDate,
-    donationTime: data.donationTime,
+    requesterBloodGroup: data.requesterBloodGroup,
     requestMessage: data.requestMessage,
  })   
   }catch(error){
@@ -52,7 +44,8 @@ setFormData((oldData)=>({
     [e.target.name]: e.target.value,
 }));
 };
-const handleUpdate = async()=>{
+const handleUpdate = async(e)=>{
+  e.preventDefault();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
     {
@@ -96,44 +89,32 @@ return (
         </Link>
       </div> 
 <form onSubmit={handleUpdate} className="space-y-5">
-        <input
-          type="text"
-          name="recipientName"
-          value={formData.recipientName}
-          onChange={handleChange}
-          placeholder="Recipient Name"
-          className="w-full border p-3 rounded"
-        />
 
         <div className="grid md:grid-cols-2 gap-5">
+       <div className="grid">
+<label className="block mb-2">Requester District</label>
           <input
             type="text"
-            name="recipientDistrict"
-            value={formData.recipientDistrict}
+            name="requesterDistrict"
+            value={formData.requesterDistrict}
             onChange={handleChange}
             placeholder="District"
             className="border p-3 rounded"
-          />
-
+          />        
+        </div>   
+         <div className="grid">
+   <label className="block mb-2">Requester Upazila</label>
           <input
             type="text"
-            name="recipientUpazila"
-            value={formData.recipientUpazila}
+            name="requesterUpazila"
+            value={formData.requesterUpazila}
             onChange={handleChange}
             placeholder="Upazila"
             className="border p-3 rounded"
-          />
+          />       
+          </div> 
         </div>
-
-        <input
-          type="text"
-          name="hospitalName"
-          value={formData.hospitalName}
-          onChange={handleChange}
-          placeholder="Hospital Name"
-          className="w-full border p-3 rounded"
-        />
-
+<label className="block mb-2">Full Address</label>
         <input
           type="text"
           name="fullAddress"
@@ -142,10 +123,10 @@ return (
           placeholder="Full Address"
           className="w-full border p-3 rounded"
         />
-
+<label className="block mb-2">Requester BloodGroup</label>
         <select
-          name="bloodGroup"
-          value={formData.bloodGroup}
+          name="requesterBloodGroup"
+          value={formData.requesterBloodGroup}
           onChange={handleChange}
           className="w-full border p-3 rounded"
         >
@@ -159,25 +140,7 @@ return (
           <option value="O+">O+</option>
           <option value="O-">O-</option>
         </select>
-
-        <div className="grid md:grid-cols-2 gap-5">
-          <input
-            type="date"
-            name="donationDate"
-            value={formData.donationDate}
-            onChange={handleChange}
-            className="border p-3 rounded"
-          />
-
-          <input
-            type="time"
-            name="donationTime"
-            value={formData.donationTime}
-            onChange={handleChange}
-            className="border p-3 rounded"
-          />
-        </div>
-
+<label className="block mb-2">Requester Message</label>
         <textarea
           name="requestMessage"
           rows={5}

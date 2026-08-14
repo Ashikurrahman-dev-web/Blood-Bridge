@@ -95,7 +95,7 @@ const MessagePage = () => {
 
                 <p>
                   <strong>Sending Time:</strong>{" "}
-                  {new Date(m.createdAt).toLocaleString()}
+                  {new Date(m.createdAt).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
 
                 <button

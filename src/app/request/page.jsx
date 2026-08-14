@@ -93,12 +93,10 @@ fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/public-donation-requests?blood=
       });
 },[bloodGroup,district,upazila]);
 const filteredRequest = requests.filter((request) =>
-request?.recipientDistrict.toLowerCase().includes(query.toLowerCase())||
-request?.recipientName.toLowerCase().includes(query.toLowerCase())||
-request?.donationDate.includes(query)||
-request?.donationTime.includes(query)||
-request?.bloodGroup.toLowerCase().includes(query.toLowerCase())||
-request?.recipientUpazila.toLowerCase().includes(query.toLowerCase())
+request?.requesterDistrict.toLowerCase().includes(query.toLowerCase())||
+request?.requesterName.toLowerCase().includes(query.toLowerCase())||
+request?.requesterBloodGroup.toLowerCase().includes(query.toLowerCase())||
+request?.requesterUpazila.toLowerCase().includes(query.toLowerCase())
 );
 const handleSearch = ()=>{
   setQuery(search)
@@ -117,7 +115,7 @@ if(loading) {
       </h1>
       {requests.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
-          No Pending Donation Requests Found
+          No Approved Donation Requests Found
         </div>
       ) : (<div>
 <div className="mb-6 flex gap-2">
@@ -164,33 +162,31 @@ onChange={(e)=>setUpazila(e.target.value)}
           {filteredRequest.map((filter) => (
             <div
               key={filter._id}
-className="bg-white rounded-xl shadow border border-red-300 p-6 hover:border-red-500 shadow-xl">
+className="bg-white rounded-xl border border-red-300 p-6 hover:border-red-500 shadow-xl">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-lg">
+                <div className="grid">
+                  <p className="text-xs text-slate-500">Requester Name</p>
+                  <h2 className="font-bold text-lg">
                   {filter.requesterName}
                 </h2>
-        <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {filter.bloodGroup}
-                </span>
+                </div>
+       <div>
+     <p className="text-xs text-slate-500">Blood Group</p>   
+         <p className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
+                  {filter.requesterBloodGroup}
+                </p>
+       </div>
               </div>
               <div className="space-y-2 text-gray-600 text-sm">
                 <p>
                   <strong>Location:</strong>{" "}
-                  {filter.recipientDistrict},{" "}
-                  {filter.recipientUpazila}
-                </p>
-                <p>
-                  <strong>Date:</strong>{" "}
-                  {filter.donationDate}
-                </p>
-                <p>
-                  <strong>Time:</strong>{" "}
-                  {filter.donationTime}
+                  {filter.requesterDistrict},{" "}
+                  {filter.requesterUpazila}
                 </p>
               </div>
               <Link
                 href={`/request/${filter._id}`}
-className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg"
               >
                 <Eye size={18} />
                 View Details

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function AllBloodDonationVolunteer(){
+export default function AllBloodDonationAdmin(){
 const [totalPage, setTotalPage] = useState(1);
 const [page, setPage] = useState(1)
 const [requests, setRequests] = useState([]);
@@ -121,11 +121,11 @@ setPage(1)
 <table className="table w-full">
  <thead>
             <tr>
-              <th>Recipient</th>
+              <th>Requester Name</th>
               <th>Location</th>
               <th>Blood</th>
               <th>Date</th>
-              <th>Requester</th>
+              <th>Requester Email</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -133,22 +133,36 @@ setPage(1)
        <tbody>
 {requests.map((request)=>(
     <tr key={request._id}>
-<td>{request.recipientName}</td>
-<td>{request.recipientDistrict}
+<td>{request.requesterName}</td>
+<td>{request.requesterDistrict}
     <br/>
-    <span>{request.recipientUpazila}</span>
+    <span>{request.requesterUpazila}</span>
 </td>
-<td>{request.bloodGroup}</td>
-<td>{request.donationDate}
+<td>{request.requesterBloodGroup}</td>
+<td>{new Date(request.createdAt).toLocaleDateString()}
     <br/>
-    <span>{request.donationTime}</span></td>
- <td>{request.requesterName}
-    <br/>
-    <span>{request.requesterEmail}</span>
+    <span>{new Date(request.createdAt).toLocaleTimeString()}</span></td>
+ <td>{request.requesterEmail}
  </td>
 <td>
  <span className={getStatusClass(request.donationStatus)}>{request.donationStatus}</span>   
  {request.donationStatus === "pending" && (
+    <div className="flex gap-1.5 mt-1">
+<button 
+                            onClick={() => handleStatusChange(request._id, 'approved')}
+className="cursor-pointer flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white text-[11px] font-medium px-2 py-1 rounded transition-colors"
+                          >
+                            <CheckCircle className="w-3 h-3" /> Approve
+                          </button> 
+<button 
+                            onClick={() => handleStatusChange(request._id, 'canceled')}
+className="cursor-pointer flex items-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-medium px-2 py-1 rounded transition-colors"
+                          >
+                            <XCircle className="w-3 h-3" /> Cancel
+                          </button>          
+    </div>
+ )}   
+ {request.donationStatus === "canceled" && (
     <div className="flex gap-1.5 mt-1">
 <button 
                             onClick={() => handleStatusChange(request._id, 'approved')}

@@ -11,29 +11,8 @@ const CreatePage = () => {
   const user = session?.user;
   const router = useRouter();
   const [isRequest, setIsRequest] = useState(false)
-const [selectedDistrict, setSelectedDistrict] = useState("");
-const [filteredUpazilas, setFilteredUpazilas] = useState([]);
-const [formData, setFormData] = useState({
-     recipientName: "",
-    recipientDistrict: "",
-    recipientUpazila: "",
-    hospitalName: "",
-    fullAddress: "",
-    bloodGroup: "",
-    donationDate: "",
-    donationTime: "",
-    requestMessage: "",
-});
-const districts = districtsData.find((item)=> item.type === "table")?.data || [];
-const upazilas = upazilasData.find((item) => item.type === "table" )?.data || [];
-useEffect(()=>{
-    if(selectedDistrict){
-        const filtered = upazilas.filter((upazila)=> upazila.district_id === selectedDistrict);
-        setFilteredUpazilas(filtered);
-    }else{
-        setFilteredUpazilas([]);
-    }
-}, [selectedDistrict]);
+const [formData, setFormData] = useState({fullAddress: "",requestMessage: "",});
+
 const handleChange = (e)=>{
 setFormData({
     ...formData,
@@ -45,15 +24,11 @@ const handleSubmit = async(e)=>{
     const donationData = {
     requesterName : user?.name,
     requesterEmail : user?.email,
-    recipientName : formData.recipientName,
-    recipientDistrict : formData.recipientDistrict,
-    recipientUpazila : formData.recipientUpazila,
-    bloodGroup : formData.bloodGroup,
-    hospitalName : formData.hospitalName,
+    requesterDistrict : user?.district,
+    requesterUpazila : user?.upazila,
+    requesterBloodGroup : user?.bloodGroup,
     fullAddress : formData.fullAddress,
     requestMessage : formData.requestMessage,
-    donationDate : formData.donationDate,
-    donationTime : formData.donationTime,
     };
   try{
 const res = await fetch(
@@ -71,14 +46,7 @@ console.log("response", data);
 if(data.success){
     setIsRequest(true);
     setFormData({
-        recipientName: "",
-        recipientDistrict: "",
-        recipientUpazila: "",
-        hospitalName: "",
         fullAddress: "",
-        bloodGroup: "",
-        donationDate: "",
-        donationTime: "",
         requestMessage: "",
     });
     toast.success("Request Successful");
@@ -108,61 +76,20 @@ return (
  className="w-full border p-3 rounded" />  
     </div>        
     </div> 
-<input 
-type="text"
-name="recipientName"
-placeholder="Recipient Name"
-onChange={handleChange}
-value={formData.recipientName}
-required
-className="w-full border p-3 rounded"
-/> 
 <div className="grid md:grid-cols-2 gap-5">
-    <select
- required
- name="recipientDistrict"
- value={selectedDistrict} 
- onChange={(e)=>{
-    setSelectedDistrict(e.target.value);
-  const districtName = districts.find((district)=>district.id === e.target.value )?.name || "";
-  setFormData({
-    ...formData,
-    recipientDistrict: districtName,
-    recipientUpazila: "",
-  });
- }}
- className="w-full border p-3 rounded">
-<option value="">Select District</option>
-{districts.map((district)=>(
-    <option key={district.id} value={district.id}>{district.name}</option>
-))}
-    </select>
-  <select
-  required
-  disabled={!selectedDistrict}
-  value={formData.recipientUpazila}
-  onChange={(e)=>{
-setFormData({
-    ...formData,
-    recipientUpazila: e.target.value,
-});
-  }}
-className="w-full border p-3 rounded">
- <option value="">Select Upazila</option>
- {filteredUpazilas.map((upazila)=>(
-<option key={upazila.id} value={upazila.name}>{upazila.name}</option>
- ))}   
-    </select>  
+<div>
+ <label className="block mb-2">Requester District</label>
+ <input defaultValue={user?.district}
+ readOnly
+ className="w-full border p-3 rounded" />   
+    </div>
+  <div>
+ <label className="block mb-2">Requester Upazila</label>
+ <input defaultValue={user?.upazila}
+ readOnly
+ className="w-full border p-3 rounded" />   
+    </div>    
 </div>
-<input
-type="text"
-name="hospitalName"
-placeholder="Hospital Name"
-value={formData.hospitalName}
-onChange={handleChange}
-required
-className="w-full border p-3 rounded"
-/>
 <input
 type="text"
 name="fullAddress"
@@ -172,41 +99,12 @@ onChange={handleChange}
 required
 className="w-full border p-3 rounded"
 />
-<select
-name="bloodGroup"
-value={formData.bloodGroup}
-onChange={handleChange}
-required
-className="w-full border p-3 rounded"
->
-<option value="">Select Blood Group</option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-          <option>O+</option>
-          <option>O-</option>
-</select>
-<div className="grid md:grid-cols-2 gap-5">
-  <input 
-  type="date"
-  name="donationDate"
-  value={formData.donationDate}
-  onChange={handleChange}
-  required
-  className="w-full border p-3 rounded"
-  /> 
-  <input 
-  type="time"
-  name="donationTime"
-  value={formData.donationTime}
-  onChange={handleChange}
-  required
-  className="w-full border p-3 rounded"
-  /> 
-</div>
+<div>
+ <label className="block mb-2">Requester BloodGroup</label>
+ <input defaultValue={user?.bloodGroup}
+ readOnly
+ className="w-full border p-3 rounded" />   
+    </div> 
 <textarea
 name="requestMessage"
 rows="5"

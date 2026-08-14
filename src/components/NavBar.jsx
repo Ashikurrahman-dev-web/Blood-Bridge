@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import { MdDashboard } from "react-icons/md";
+import { Settings } from "lucide-react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -38,9 +39,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-400 backdrop-blur-md py-3.5 px-6">
   <div className="max-w-7xl mx-auto flex items-center justify-between">
-    
     <Logo />
-
     {/* Desktop Menu */}
     <div className="hidden md:flex items-center gap-4">
       <Link
@@ -130,6 +129,14 @@ export default function Navbar() {
               >
                 <MdDashboard />
                 Dashboard
+              </Link>
+)}
+{session?.user && session.user.role === "patient" &&(
+<Link
+                href='/dashboard/profile'
+                className="flex items-center gap-1 px-4 py-2 text-slate-600">
+                  <Settings/>
+                ProfileSetting
               </Link>
 )}
               <button

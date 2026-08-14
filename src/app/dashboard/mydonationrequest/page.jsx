@@ -107,8 +107,8 @@ setPage(1)
       <Table.ScrollContainer>
         <Table.Content aria-label="Table with pagination" className="min-w-[600px]">
           <Table.Header>
-            <Table.Column isRowHeader>Recipient Name</Table.Column>
-            <Table.Column>Donation Date</Table.Column>
+            <Table.Column isRowHeader>Requester Name</Table.Column>
+            <Table.Column>Request Date</Table.Column>
             <Table.Column>Status</Table.Column>
             <Table.Column className={`text-center`}>Actions</Table.Column>
            </Table.Header>
@@ -116,8 +116,8 @@ setPage(1)
            {
           requests.map((request)=>(  <Table.Row key={request._id}>
                 <Table.Collection>
-                   <Table.Cell>{request.recipientName}</Table.Cell>
-                   <Table.Cell>{request.donationDate}</Table.Cell>
+                   <Table.Cell>{request.requesterName}</Table.Cell>
+                   <Table.Cell>{new Date(request.createdAt).toLocaleString()}</Table.Cell>
 <Table.Cell className={`${getStatusClass(request.donationStatus)}`}>{request.donationStatus}</Table.Cell>
 <Table.Cell>
    <div className="flex justify-center gap-3">
@@ -141,7 +141,14 @@ setPage(1)
                                 className="text-red-600 cursor-pointer"
                               />
                             </button>    </>)}
-                   
+{request.donationStatus === "canceled" &&(
+  <button>
+                        <Trash2 onClick={()=>openDeleteModal(request._id)}
+                                size={18}
+                                className="text-red-600 cursor-pointer"
+                              />
+                            </button>
+)}            
                           </div>
 </Table.Cell>
                 </Table.Collection>

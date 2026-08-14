@@ -199,11 +199,11 @@ className="border px-4 py-2 rounded-lg"
          {user.status === "active" && user.role !== "admin" ? (
     <button className='cursor-pointer bg-red-500 text-white px-4 py-2 rounded-lg mb-1'
                 key='block'
-                onClick={() =>
+                onClick={() =>{
                   updateStatus(
                     user._id,
                     "blocked"
-                  )
+                  ); setDropdownOpen(null)}
                 }
               >
                 Block User
@@ -212,11 +212,11 @@ className="border px-4 py-2 rounded-lg"
               <button
                 className='cursor-pointer bg-green-500 text-white px-4 py-2 rounded-lg mb-1'
                 key='unblock'
-                onClick={() =>
+                onClick={() =>{
                   updateStatus(
                     user._id,
                     "active"
-                  )
+                  ); setDropdownOpen(null)}
                 }
               >
                 Unblock User
@@ -229,7 +229,7 @@ className="border px-4 py-2 rounded-lg"
       <button
         className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg mb-1 mr-2'
         key='volunteer'
-        onClick={() => updateRole(user._id, "volunteer")}
+        onClick={() =>{ updateRole(user._id, "volunteer"); setDropdownOpen(null)}}
       >
         Make Volunteer
       </button>
@@ -239,7 +239,7 @@ className="border px-4 py-2 rounded-lg"
       <button
         className='cursor-pointer bg-yellow-500 text-white px-4 py-2 rounded-lg mb-1 mr-2'
         key='donor'
-        onClick={() => updateRole(user._id, "donor")}
+        onClick={() => {updateRole(user._id, "donor"); setDropdownOpen(null)}}
       >
         Make Donor
       </button>
@@ -249,7 +249,7 @@ className="border px-4 py-2 rounded-lg"
       <button
         className='cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg mb-1'
         key='patient'
-        onClick={() => updateRole(user._id, "patient")}
+        onClick={() => {updateRole(user._id, "patient");setDropdownOpen(null)}}
       >
         Make Patient
       </button>

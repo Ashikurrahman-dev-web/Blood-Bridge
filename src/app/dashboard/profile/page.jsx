@@ -1,6 +1,7 @@
 "use client"
 import { authClient, useSession } from '@/lib/auth-client';
 import { uploadImage } from '@/utils/uploadImage';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -117,6 +118,9 @@ return (
 }
     return (
 <div className="max-w-4xl mx-auto bg-gray-300 p-8 rounded-xl shadow">
+    <button>
+    <Link className='bg-red-500 text-white rounded-2xl py-2 px-2' href={'/'}>Go Back Home</Link>
+        </button>
     <div className="flex justify-between items-center mb-8">
    <h2 className="text-3xl font-bold">
       My Profile
@@ -232,7 +236,7 @@ disabled={!isEditing}
 className="w-full border rounded-lg p-3"
 /> 
 </div>
-    </div>   
+    </div>    
 </div>        
     );
 };
