@@ -78,21 +78,21 @@ export default function FundingPage() {
                 placeholder="0.00"
                 value={selectedAmount}
                 onChange={(e) => setSelectedAmount(e.target.value)}
-                startContent={
+                startcontent={
                   <DollarSign className="w-4 h-4 text-slate-400 shrink-0 pointer-events-none" />
                 }
                 variant="bordered"
                 radius="lg"
                 size="lg"
-                classNames={{
-                  inputWrapper: 'border-slate-200 hover:border-red-400 focus-within:!border-red-600 bg-white shadow-sm',
+                className={{
+inputWrapper: 'border-slate-200 hover:border-red-400 focus-within:!border-red-600 bg-white shadow-sm',
                   input: 'text-slate-800 font-semibold text-base placeholder:text-slate-400',
                 }}
               />
             </div>
 
             {/* Trust Badge */}
-            <div className="flex items-center justify-center gap-2 text-xs text-slate-500 bg-slate-50 py-2.5 px-3 rounded-xl border border-slate-100">
+<div className="flex items-center justify-center gap-2 text-xs text-slate-500 bg-slate-50 py-2.5 px-3 rounded-xl border border-slate-100">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
               <span>Secure payment powered by Stripe</span>
             </div>
@@ -103,7 +103,7 @@ export default function FundingPage() {
               color="danger"
               size="lg"
               radius="lg"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-200 transition-all duration-200 flex items-center justify-center gap-2"
+className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-200 transition-all duration-200 flex items-center justify-center gap-2"
             >
               <HeartHandshake className="w-5 h-5" />
               Give Fund Now
