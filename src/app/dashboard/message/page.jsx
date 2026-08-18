@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -8,9 +9,14 @@ const MessagePage = () => {
   const [message, setMessage] = useState([]);
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
+    const {data: tokenData} = await authClient.token();
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/message/admin`
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/message/admin`,{
+          headers:{
+            authorization: `Bearer ${tokenData?.token}`
+          }
+        }
       );
 
       const data = await res.json();
@@ -33,12 +39,15 @@ const MessagePage = () => {
     );
 
     if (!confirmDelete) return;
-
+const {data: tokenData} = await authClient.token();
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/message/admin/${id}`,
         {
           method: "DELETE",
+          headers:{
+          authorization:`Bearer ${tokenData?.token}`  
+          }
         }
       );
       const data = await res.json();

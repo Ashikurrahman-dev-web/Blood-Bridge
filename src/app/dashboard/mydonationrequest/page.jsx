@@ -1,5 +1,5 @@
 "use client"
-import { useSession } from "@/lib/auth-client"
+import { authClient, useSession } from "@/lib/auth-client"
 import { useCallback, useEffect, useState } from "react";
 import { Pagination, Table} from "@heroui/react";
 import { Edit, Eye, Trash2 } from "lucide-react";
@@ -15,9 +15,16 @@ const [requests, setRequests] = useState([]);
 const [loading, setLoading] = useState(true);
 const fetchRequest = useCallback(async()=>{
   if(!user?.email) return;
+  const {data: tokenData} = await authClient.token();
   try{
     setLoading(true)
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/my-donation-requests?email=${user.email}&status=${statusFilter}&page=${page}`)
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/my-donation-requests?email=${user.email}&status=${statusFilter}&page=${page}`,
+  {
+    headers:{
+      authorization: `Bearer ${tokenData?.token}`
+    }
+  }
+)
 const data = await res.json();
 setRequests(data.requests);
 setTotalPage(data.totalPage || 1)
@@ -38,10 +45,14 @@ const openDeleteModal = (id)=>{
   setIsModalOpen(true);
 }
 const handleDelete = async()=>{
+  const {data: tokenData} = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${selectedDeleteId}`,
   {
     method: 'DELETE',
+    headers:{
+     authorization: `Bearer ${tokenData?.token}` 
+    }
   }
 );
 const data = await res.json()

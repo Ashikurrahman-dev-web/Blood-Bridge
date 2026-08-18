@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ const CommentPage = () => {
       comment: formData.get("comment"),
       createAt: new Date().toISOString(),
     };
+    const {data: tokenData} = await authClient.token()
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment`,
@@ -31,6 +32,7 @@ const CommentPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`
           },
           body: JSON.stringify(commentData),
         }

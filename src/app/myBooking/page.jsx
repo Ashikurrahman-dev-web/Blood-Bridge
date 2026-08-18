@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { XCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,9 +16,15 @@ const BookingPage = () => {
 fetchData();
   }, [user]);
   const fetchData = async () => {
+    const {data: tokenData} = await authClient.token()
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking-donation?email=${user.email}`
+          `${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking-donation?email=${user.email}`,
+          {
+            headers:{
+              authorization: `Bearer ${tokenData?.token}`,
+            }
+          }
         );
 
         const data = await res.json();
@@ -33,11 +39,13 @@ fetchData();
       }
     };
 const handleCancel = async(id)=>{
+  const {data: tokenData} = await authClient.token()
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking-donation/${id}`,{
     method: "PATCH",
     headers:{
-        'Content-Type': "application/json"
+        'Content-Type': "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
     },
     body: JSON.stringify()
 });

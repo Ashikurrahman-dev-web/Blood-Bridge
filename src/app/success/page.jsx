@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 
 import { stripe } from '../../lib/stripe'
 import { donation } from '@/lib/action/donation'
-import { ArrowLeft, CheckCircle2, Heart, Mail, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, Heart, Mail } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function Success({ searchParams }) {
@@ -67,7 +67,7 @@ export default async function Success({ searchParams }) {
                   href="mailto:orders@example.com"
                   className="text-red-600 font-medium hover:underline focus:outline-none"
                 >
-                  orders@example.com
+                  support@bloodflow.com
                 </a>
               </p>
             </div>

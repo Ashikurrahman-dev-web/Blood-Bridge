@@ -185,7 +185,7 @@ className="bg-white rounded-xl border border-red-300 p-6 hover:border-red-500 sh
                 </p>
               </div>
               <Link
-                href={`/request/${filter._id}`}
+                href={`/blood/${filter._id}`}
 className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg"
               >
                 <Eye size={18} />

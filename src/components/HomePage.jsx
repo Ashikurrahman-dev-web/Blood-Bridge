@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { Avatar } from "@heroui/react";
 import { MoreVertical, Send } from "lucide-react";
 import Link from "next/link";
@@ -53,24 +53,40 @@ toast.error("Something went Wrong")
  const [comments, setComments] = useState([]);
    const [loading, setLoading] = useState(true);
    const fetchData = async () => {
-     try {
-       const res = await fetch(
-         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/admin`
-       );
-       const data = await res.json();
-       setComments(data);
-       setLoading(false);
-     } catch (error) {
-       console.log(error);
-       setLoading(false);
-     }
-   };
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/admin`);
+
+    const data = await res.json();
+
+    console.log("Comment API response:", data);
+    console.log("Status:", res.status);
+    if (!res.ok) {
+      console.log("Comment API error:", data);
+      setComments([]);
+      return;
+    }
+    if (Array.isArray(data)) {
+      setComments(data);
+    } else {
+      setComments([]);
+    }
+
+  } catch (error) {
+    console.log("Fetch comments error:", error);
+    setComments([]);
+  } finally {
+    setLoading(false);
+  }
+};
 const handleEdit = async(id)=>{
+  const {data: tokenData} = await authClient.token()
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/${id}`,{
     method: "PATCH",
     headers:{
-        'Content-Type': "application/json"
+        'Content-Type': "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
     },
     body: JSON.stringify({
       comment: editComment,
@@ -95,11 +111,15 @@ const openDeleteModal = (id)=>{
   setIsModalOpen(true);
 } 
 const handleDelete = async () => {
+  const {data: tokenData} = await authClient.token()
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/${selectedDeleteId}`,
         {
           method: "DELETE",
+          headers: {
+            authorization: `Bearer ${tokenData?.token}`,
+          },
         }
       );
       const data = await res.json();
@@ -241,7 +261,8 @@ className="hidden md:flex absolute -left-2 top-1/2 -translate-y-1/2 z-20 bg-red-
         ref={scrollRef}
 className="flex gap-4 overflow-x-auto snap-x snap-mandatory p-2 scrollbar-none scroll-smooth touch-pan-x select-none"
       >
-        {comments.map((comment) => (
+{Array.isArray(comments) &&
+ comments.map((comment) => (
           <div
             key={comment._id}
             className="min-w-[320px] h-36 flex flex-col justify-between border border-red-300 p-3 hover:border-red-500 rounded-2xl snap-start flex-shrink-0 shadow-xl bg-white"
@@ -331,6 +352,7 @@ onClick={() => {setEditing(comment._id);setEditComment(comment.comment);setDropd
 </div>
           </div>
         ))}
+
       </div>  
 )}      
       <button

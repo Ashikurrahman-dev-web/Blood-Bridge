@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 export default function DonationRequestDetails() {
   const { id } = useParams();
@@ -13,10 +14,16 @@ useEffect(() => {
   fetchRequest();
 }, [id]);
 const fetchRequest = async () => {
+  const {data: tokenData} = await authClient.token();
     try {
       if (!id) return;
 const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`);
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
+      {
+        headers:{
+          authorization: `Bearer ${tokenData?.token}`
+        }
+      });
 
       if (!res.ok) {
         console.error(
@@ -37,11 +44,13 @@ const res = await fetch(
     }
   };
 const handleDone = async(id)=>{
+  const {data: tokenData} = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking-donation/done/${id}`,{
     method: "PATCH",
     headers:{
-        'Content-Type': "application/json"
+        'Content-Type': "application/json",
+     authorization: `Bearer ${tokenData?.token}`   
     },
     body: JSON.stringify()
 });

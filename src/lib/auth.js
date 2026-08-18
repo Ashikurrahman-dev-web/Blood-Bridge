@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { ApiError } from "next/dist/server/api-utils";
+import { jwt } from "better-auth/plugins";
 const client = new MongoClient(process.env.MONGODB_URI,)
 const db = client.db(process.env.MONGODB_DB_NAME);
 
@@ -50,4 +51,12 @@ throw new ApiError("FORBIDDEN",{
 };
 },
 },
+session:{
+cookieCache: {
+  enabled: true,
+  strategy: "jwt",
+  maxAge: 30 * 24 * 60 * 60
+}
+  },
+  plugins:[jwt()]
 });

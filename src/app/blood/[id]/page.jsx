@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -16,10 +16,16 @@ export default function DonationRequestDetailsPage() {
   const router = useRouter()
   useEffect(() => {
   const fetchRequest = async () => {
+    const {data: tokenData} = await authClient.token();
     try {
 if (!id) return;
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`);
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
+      {
+        headers:{
+          authorization: `Bearer ${tokenData?.token}`
+        }
+      });
 
       if (!res.ok) {
         console.error("Request Failed:", res.status);
@@ -37,11 +43,13 @@ if (!id) return;
 fetchRequest();
 }, [id]);
 const handleBooking = async ()=>{
+  const {data: tokenData} = await authClient.token();
 try{
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/booking/${id}`,
   {method: "PATCH",
 headers:{
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
+  authorization: `Bearer ${tokenData?.token}`
 },
 body: JSON.stringify({
   patientName: user?.name,

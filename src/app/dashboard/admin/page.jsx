@@ -1,5 +1,5 @@
 "use client"
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { DollarSign, Droplets, Users } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,9 +13,15 @@ export default function AdminDashboardHome(){
     const [funding, setFunding] = useState([]);   
 useEffect(() => {
   const fetchFunding = async () => {
+    const {data: tokenData} = await authClient.token()
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donationDetails`);
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donationDetails`,
+      {
+        headers:{
+          authorization:  `Bearer ${tokenData?.token}`
+        }
+      });
 
       if (!res.ok) {
         console.error("Request failed:", res.status);
@@ -44,10 +50,14 @@ const [stats,setStats] = useState({
 })
 useEffect(() => {
   const fetchStats = async () => {
+    const {data: tokenData} = await authClient.token();
     try {
-  
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/admin-stats`);
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/admin-stats`,{
+         headers:{
+          authorization:  `Bearer ${tokenData?.token}`
+        }
+        });
 
       if (!res.ok) {
         console.error("Request failed:", res.status);
@@ -172,7 +182,7 @@ return (
      <h3 className="mt-14 mb-4 text-red-500 text-3xl font-bold text-center">
               Funding Details
             </h3>   
-<div className="bg-red-200 rounded-xl shadow overflow-x-auto">
+<div className="bg-blue-200 rounded-xl shadow overflow-x-auto">
         <table className="w-full">
          <thead className="bg-gray-100">
   <tr>

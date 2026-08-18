@@ -1,4 +1,5 @@
 "use client"
+import { authClient } from "@/lib/auth-client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation"
@@ -20,8 +21,15 @@ useEffect(()=>{
 if(!id)
 return;
 const fetchRequest = async()=>{
+  const {data: tokenData} = await authClient.token();
   try{
- const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`)
+ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
+  {
+    headers:{
+      authorization: `Bearer ${tokenData?.token}`
+    }
+  }
+ )
  const data = await res.json();
  setFormData({
     requesterDistrict: data.requesterDistrict,
@@ -46,12 +54,14 @@ setFormData((oldData)=>({
 };
 const handleUpdate = async(e)=>{
   e.preventDefault();
+  const {data: tokenData} = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${id}`,
     {
         method: "PATCH",
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${tokenData?.token}`
       },
       body: JSON.stringify(formData),  
     }

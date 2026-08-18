@@ -1,4 +1,5 @@
 "use client";
+import { authClient } from '@/lib/auth-client';
 import { MoreVertical } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -11,8 +12,15 @@ const [loading, setLoading] = useState(true);
 const [dropdownOpen, setDropdownOpen] = useState(null);
 const dropdownRef = useRef(null);
 const fetchUsers = async () => {
+   const { data: tokenData } = await authClient.token();
  try{
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users?status=${statusFilter}&roleVisitor=${roleStatus}`);
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users?status=${statusFilter}&roleVisitor=${roleStatus}`,
+  {
+    headers:{
+      authorization: `Bearer ${tokenData?.token}`,
+    }
+  }
+);
 const data = await res.json();
 setUsers(data);
 console.log('users', data);
@@ -26,12 +34,14 @@ useEffect(() => {
     fetchUsers();
 }, [statusFilter] [roleStatus]);
 const updateStatus = async (id, status) => {
+  const { data: tokenData } = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users/status/${id}`,
     {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`
         },
         body: JSON.stringify({ status })
     });
@@ -47,12 +57,14 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users/status/
 };
 
 const updateRole = async (id, role) => {
+   const { data: tokenData } = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/users/role/${id}`,
     {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`
         },
         body: JSON.stringify({ role})
     });

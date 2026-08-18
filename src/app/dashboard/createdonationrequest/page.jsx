@@ -1,9 +1,8 @@
 "use client";
-import districtsData from "@/data/districts.json";
-import upazilasData from "@/data/upazilas.json";
-import { useSession } from '@/lib/auth-client';
+
+import { authClient, useSession } from '@/lib/auth-client';
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from "react-hot-toast";
 
 const CreatePage = () => {
@@ -30,13 +29,15 @@ const handleSubmit = async(e)=>{
     fullAddress : formData.fullAddress,
     requestMessage : formData.requestMessage,
     };
+    const {data: tokenData} = await authClient.token();
   try{
 const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-requests`,
     {
         method : "POST",
         headers: {
-            "content-type": "application/json"
+            "content-type": "application/json",
+         authorization: `Bearer ${tokenData?.token}`   
         },
         body: JSON.stringify(donationData),
     }

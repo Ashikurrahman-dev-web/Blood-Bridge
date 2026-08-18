@@ -25,8 +25,14 @@ const ProfilePage = () => {
   useEffect(()=>{
  const loadProfile = async()=>{
 if(!userEmail) return;
+const {data: tokenData} = await authClient.token();
 try{
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/user/${encodeURIComponent(userEmail)}`);
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/user/${encodeURIComponent(userEmail)}`,
+{
+    headers:{
+      authorization: `Bearer ${tokenData?.token}` 
+    }
+});
 const data = await res.json();
 setProfile({
     name: data?.name || "",
@@ -77,11 +83,12 @@ const handleSaving = async () => {
             image: uploadedImage,
         });
         console.log(result);
-
+const {data: tokenData} = await authClient.token();
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/user/${encodeURIComponent(userEmail)}`, {
             method: 'PATCH',
             headers: {
                 'content-Type': 'application/json',
+              authorization: `Bearer ${tokenData?.token}`  
             },
             body: JSON.stringify({
                 ...profile,

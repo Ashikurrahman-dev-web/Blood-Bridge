@@ -1,4 +1,5 @@
 "use client"
+import { authClient } from '@/lib/auth-client';
 import { Avatar } from '@heroui/react';
 import { Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -7,22 +8,33 @@ import toast from 'react-hot-toast';
 const CommentAdmin = () => {
 const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const fetchData = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/admin`
-      );
+const fetchData = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/admin`);
 
-      const data = await res.json();
+    const data = await res.json();
 
-      setComments(data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+    console.log("Comment API response:", data);
+    console.log("Status:", res.status);
+    if (!res.ok) {
+      console.log("Comment API error:", data);
+      setComments([]);
+      return;
     }
-  };
+    if (Array.isArray(data)) {
+      setComments(data);
+    } else {
+      setComments([]);
+    }
 
+  } catch (error) {
+    console.log("Fetch comments error:", error);
+    setComments([]);
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => {
     fetchData();
   }, []);
@@ -33,11 +45,15 @@ const openDeleteModal = (id)=>{
   setIsModalOpen(true);
 } 
   const handleDelete = async () => {
+    const {data: tokenData} = await authClient.token();
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/comment/${selectedDeleteId}`,
         {
           method: "DELETE",
+          headers:{
+            authorization: `Bearer ${tokenData?.token}`
+          }
         }
       );
       const data = await res.json();
@@ -67,7 +83,8 @@ const openDeleteModal = (id)=>{
 <div className="max-w-7xl mx-auto mt-8 mb-8">
       <p className="font-semibold px-4">Comments ({comments.length})</p>
       <div className="grid lg:grid-cols-2 gap-8 p-4">
-        {comments.map((comment) => (
+        {Array.isArray(comments)&&
+ comments.map((comment) => (
           <div
             key={comment._id}
             className="bg-gray-300 rounded-2xl p-4"
@@ -95,12 +112,13 @@ const openDeleteModal = (id)=>{
                   onClick={() => openDeleteModal(comment._id)}
                   className="text-red-500 bg-gray-200 rounded-2xl p-2 flex gap-1 cursor-pointer"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={16} className='mt-1' />
                   Delete
                 </button>              
             </div>
           </div>
-        ))}
+        ))       
+        }
       </div>
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">

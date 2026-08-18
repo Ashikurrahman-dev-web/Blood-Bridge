@@ -4,15 +4,8 @@ import { Columns4, GitPullRequest, Home, Menu, Send, Settings, UserRoundPlus, Us
 import React, { useState } from 'react';
 import Logo from './Logo';
 import { MdMessage } from 'react-icons/md';
-
-const SideBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const {data: session} = useSession();
-  const user = session?.user
-  const toggleSidebar = ()=>{
-    setIsOpen(!isOpen); 
-  };
-  const dashboardItems = {
+import Link from 'next/link';
+const dashboardItems = {
     "donor":[
   {name: 'Home', icon: <Home className='w-5 h-5'/>, href: '/dashboard/donor'},
   {name: 'ProfileSettings', icon: <Settings className='w-5 h-5'/>, href: '/dashboard/profile'},
@@ -34,6 +27,19 @@ const SideBar = () => {
 { name: 'Comment', icon: <Send className="w-5 h-5" />, href: '/dashboard/commentAdmin'},               
     ]   
   };
+const SideBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const {data: session, isPending} = useSession();
+  if (isPending) {
+  return (
+    <div className="w-64 min-h-screen bg-red-100" />
+  );
+}
+  const user = session?.user
+  const toggleSidebar = ()=>{
+    setIsOpen(!isOpen); 
+  };
+  
  const menuItems = dashboardItems[user?.role] || [];  
     return (
         <div className="flex bg-red-100 min-h-screen mr-8">
@@ -61,14 +67,14 @@ className="p-2 rounded-md bg-white shadow-md text-gray-700 hover:bg-gray-50 focu
           </div>
 <nav className="space-y-1">
   {menuItems.map((item, index)=>(
-    <a key={index}
+    <Link key={index}
     href={item.href}
 className="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-red-500 hover:text-white transition-all group">
 <div className="text-slate-500 group-hover:text-white transition-colors flex gap-1">
     {item.icon}
     <span className="font-medium">{item.name}</span>
 </div>
-    </a>
+    </Link>
   ))}  
 </nav>
     </div>        

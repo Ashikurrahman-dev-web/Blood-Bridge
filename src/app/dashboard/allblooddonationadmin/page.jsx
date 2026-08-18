@@ -1,4 +1,5 @@
 "use client"
+import { authClient } from "@/lib/auth-client";
 import { CheckCircle, ChevronLeft, ChevronRight, Eye, Trash2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,8 +16,15 @@ useEffect(()=>{
   fetchRequest();
 }, [statusFilter, page]);
 const fetchRequest = async()=>{
+  const {data: tokenData} = await authClient.token();
 try{
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/all-blood-donation-requests?status=${statusFilter}&page=${page}&limit=${limit}`)
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/all-blood-donation-requests?status=${statusFilter}&page=${page}&limit=${limit}`,
+  {
+    headers:{
+      authorization: `Bearer ${tokenData?.token}`
+    }
+  }
+)
 const data = await res.json();
 setRequests(data.requests);
 setTotalPage(data.totalPage || 1)
@@ -34,11 +42,15 @@ const openDeleteModal = (id)=>{
   setIsModalOpen(true);
 }
 const handleDelete = async (id) => {
+  const {data: tokenData} = await authClient.token();
 try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/${selectedDeleteId}`,
         {
           method: "DELETE",
+          headers:{
+            authorization: `Bearer ${tokenData?.token}`
+          }
         }
       );
 
@@ -56,11 +68,13 @@ setIsModalOpen(false);
     }
   };
 const handleStatusChange = async (id, status) => {
+  const {data: tokenData} = await authClient.token();
 try{
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/donation-request/status/${id}`, {
     method: 'PATCH',
     headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${tokenData?.token}`
     },
     body: JSON.stringify({ status }),
 });
