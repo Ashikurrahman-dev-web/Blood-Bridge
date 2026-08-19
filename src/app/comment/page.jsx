@@ -53,43 +53,43 @@ const CommentPage = () => {
   };
 
   return (
-    <div className="grid">
-      <form
-        onSubmit={commentSubmit}
-        className="w-[40%] mt-10 text-center mx-90 relative"
+    <div className="w-full max-w-md mx-auto px-4 mt-10">
+  <form onSubmit={commentSubmit} className="w-full">
+    <label className="block text-xl font-bold text-red-500 mb-2">
+      Comment
+    </label>
+
+    {/* Input & Button Container */}
+    <div className="relative flex items-center">
+      <input
+        type="text"
+        name="comment"
+        placeholder="Keep your comment"
+        className="w-full border border-red-300 rounded-xl pl-4 pr-12 py-3 text-sm text-black placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
+        required
+      />
+
+      <button
+        type="submit"
+        className="absolute right-3 cursor-pointer text-blue-500 hover:text-blue-600 transition p-1"
+        aria-label="Send comment"
       >
-        <label className="block text-xl font-bold text-red-500 mb-2">
-          Comment
-        </label>
-
-        <input
-          type="text"
-          name="comment"
-          placeholder="Keep your comment"
-className="w-full border border-red-300 rounded-xl px-4 py-3 text-sm text-black placeholder-gray-400 focus:outline-none focus:border-red-500/50 transition"
-          required
-        />
-
-        <div className="absolute right-1 bottom-1">
-          <button
-            type="submit"
-            className="cursor-pointer text-blue-500"
-          >
-            <Send />
-          </button>
-        </div>
-      </form>
-
-      <div className="text-center mt-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 mt-2"
-        >
-          <ArrowLeft size={18} />
-          Back
-        </Link>
-      </div>
+        <Send size={20} />
+      </button>
     </div>
+  </form>
+
+  {/* Back Link */}
+  <div className="text-center mt-6">
+    <Link
+      href="/"
+      className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 transition"
+    >
+      <ArrowLeft size={18} />
+      Back
+    </Link>
+  </div>
+</div>
   );
 };
 
