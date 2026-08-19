@@ -155,7 +155,7 @@ export default function Navbar() {
         onClick={() => setMenuOpen(!menuOpen)}
         className="md:hidden text-white text-xl"
       >
-        {menuOpen ? <FaTimes /> : <FaBars />}
+        {menuOpen ? <FaTimes className="text-red-400"/> : <FaBars className="text-red-400"/>}
       </button>
 
       {/* Login/Register Desktop */}
