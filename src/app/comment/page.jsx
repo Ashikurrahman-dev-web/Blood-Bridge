@@ -53,7 +53,7 @@ const CommentPage = () => {
   };
 
   return (
-    <div>
+    <div className="grid">
       <form
         onSubmit={commentSubmit}
         className="w-[40%] mt-10 text-center mx-90 relative"
