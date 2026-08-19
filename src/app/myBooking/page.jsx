@@ -95,41 +95,34 @@ className="bg-red-200 rounded-xl shadow border border-red-300 p-8">
             <p className="font-semibold">
               Blood Group
             </p>
-            <p>{booking.bloodGroup}</p>
+            <p>{booking.requesterBloodGroup}</p>
           </div>
             <div>
               <p className="font-semibold">
                 District
               </p>
-              <p>{booking.recipientDistrict}</p>
+              <p>{booking.requesterDistrict}</p>
             </div>
 
             <div>
               <p className="font-semibold">
                 Upazila
               </p>
-              <p>{booking.recipientUpazila}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">
-                Hospital Name
-              </p>
-              <p>{booking.hospitalName}</p>
+              <p>{booking.requesterUpazila}</p>
             </div>
 
             <div>
               <p className="font-semibold">
                 Donation Date
               </p>
-              <p>{booking.donationDate}</p>
+              <p>{new Date(booking.createdAt).toLocaleDateString()}</p>
             </div>
 
             <div>
               <p className="font-semibold">
                 Donation Time
               </p>
-              <p>{booking.donationTime}</p>
+              <p>{new Date(booking.createdAt).toLocaleTimeString()}</p>
             </div>
 </div>
 <div className="grid md:grid-cols-2 gap-6">
