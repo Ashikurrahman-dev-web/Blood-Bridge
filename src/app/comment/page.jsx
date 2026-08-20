@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient, useSession } from "@/lib/auth-client";
+import { $brand } from "better-auth";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -71,7 +72,9 @@ const CommentPage = () => {
 
       <button
         type="submit"
-        className="absolute right-3 cursor-pointer text-blue-500 hover:text-blue-600 transition p-1"
+className={`absolute right-3 cursor-pointer transition p-1${
+commentData ? "text-blue-500 hover:text-blue-600" : ""
+}`}
         aria-label="Send comment"
       >
         <Send size={20} />
