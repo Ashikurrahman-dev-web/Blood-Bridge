@@ -71,7 +71,6 @@ const CommentPage = () => {
 
       <button
         type="submit"
-        disabled={!comment}
         className="absolute right-3 cursor-pointer text-blue-500 hover:text-blue-600 transition p-1"
         aria-label="Send comment"
       >
