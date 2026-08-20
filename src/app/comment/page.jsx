@@ -1,28 +1,25 @@
 "use client";
 
 import { authClient, useSession } from "@/lib/auth-client";
-import { $brand } from "better-auth";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const CommentPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
-
+  const [comment,setComment] = useState("")
   const commentSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
 
     const commentData = {
       name: user?.name,
       email: user?.email,
       image: user?.image,
-      comment: formData.get("comment"),
+      comment: comment,
       createAt: new Date().toISOString(),
     };
     const {data: tokenData} = await authClient.token()
@@ -65,6 +62,8 @@ const CommentPage = () => {
       <input
         type="text"
         name="comment"
+        value={comment}
+        onChange={(e)=> setComment(e.target.value)}
         placeholder="Keep your comment"
         className="w-full border border-red-300 rounded-xl pl-4 pr-12 py-3 text-sm text-black placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
         required
@@ -73,7 +72,7 @@ const CommentPage = () => {
       <button
         type="submit"
 className={`absolute right-3 cursor-pointer transition p-1${
-comment ? "text-blue-500 hover:text-blue-600" : ""
+comment.trim() ? "text-blue-500 hover:text-blue-600" : "text-gray-400"
 }`}
         aria-label="Send comment"
       >
