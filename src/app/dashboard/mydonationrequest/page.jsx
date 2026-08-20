@@ -104,6 +104,7 @@ setPage(1)
 <option value="pending">Pending</option>
 <option value="approved">Approved</option>
 <option value="canceled">Canceled</option>
+<option value="done">Done</option>
     </select>      
 </div>
 <div className="bg-white rounded-xl shadow overflow-hidden">

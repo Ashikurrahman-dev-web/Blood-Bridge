@@ -11,7 +11,7 @@ const DonorPage = () => {
     const user = session?.user; 
     return (
          <div className="space-y-8 w-full">
- <button>
+ <button className='ml-10'>
 <Link className='bg-red-500 text-white rounded-2xl py-2 px-2' href={'/'}>Go Back Home</Link>
         </button>
  <main className=" flex items-center justify-center">
