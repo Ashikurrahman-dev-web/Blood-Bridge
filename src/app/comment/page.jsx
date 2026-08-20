@@ -73,7 +73,7 @@ const CommentPage = () => {
       <button
         type="submit"
 className={`absolute right-3 cursor-pointer transition p-1${
-commentData ? "text-blue-500 hover:text-blue-600" : ""
+comment ? "text-blue-500 hover:text-blue-600" : ""
 }`}
         aria-label="Send comment"
       >
