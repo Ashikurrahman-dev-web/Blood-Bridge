@@ -302,7 +302,7 @@ value={editing === comment._id ? editComment : comment.comment || ""}
     <button
       onClick={() => handleEdit(comment._id)}
       className="mt-10 cursor-pointer">
-      <Send className={comment.comment ? "text-gray-400" :"text-blue-500"} />
+<Send className={comment.comment ? "text-gray-400" : editComment.trim() ? "text-blue-500" : "text-gray-400"} />
 
     </button>
   )}
