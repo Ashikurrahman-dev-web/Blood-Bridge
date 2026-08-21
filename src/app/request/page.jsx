@@ -109,92 +109,119 @@ if(loading) {
     );
   };
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-8">
-       Donated Blood
-      </h1>
-      {requests.length === 0 ? (
-        <div className="text-center py-20 text-gray-500">
-          No Approved Donation Requests Found
-        </div>
-      ) : (<div>
-<div className="mb-6 flex gap-2">
-  <input
-  type="text"
-  value={search}
-  onChange={(e)=> setSearch(e.target.value)}
-className="w-full md:w-1/2 border px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[red]"
-  />
- <button
- onClick={handleSearch}
- className="bg-red-500 text-white px-6 py-2 rounded-xl cursor-pointer">Search</button>
-</div>
-<div className="flex gap-5 mb-5">
-  <select
-  value={bloodGroup}
-  onChange={(e)=>setBloodGroup(e.target.value)}
-  className="border px-4 py-2 rounded-lg">
-    <option value="all">All Blood Group</option>
-{bloodGroups.map((blood)=>(
-<option key={blood} value={blood}>{blood}</option>
-))}
-  </select>
-<select
-value={district}
-onChange={(e)=>setDistrict(e.target.value)}
-className="border px-4 py-2 rounded-lg">
-<option value="all">All District</option>
-{allDistrict.map((allDistric)=>(
-  <option key={allDistric} value={allDistric}>{allDistric}</option>
-))}  
-  </select>
- <select
-value={upazila}
-onChange={(e)=>setUpazila(e.target.value)}
- className="border px-4 py-2 rounded-lg">
- <option value="all">All Upazila</option>
- {[...new Set(allUpazila)].map((allUpazil)=>(
-  <option key={allUpazil} value={allUpazil}>{allUpazil}</option>
- ))}
-  </select>  
-  </div>      
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRequest.map((filter) => (
-            <div
-              key={filter._id}
-className="bg-white rounded-xl border border-red-300 p-6 hover:border-red-500 shadow-xl">
-              <div className="flex justify-between items-center mb-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+  <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-slate-800">
+    Donated Blood
+  </h1>
+
+  {requests.length === 0 ? (
+    <div className="text-center py-16 sm:py-20 text-gray-500 text-sm sm:text-base">
+      No Approved Donation Requests Found
+    </div>
+  ) : (
+    <div>
+      {/* Search Bar Section */}
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <input
+          type="text"
+          value={search}
+          placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full sm:w-1/2 md:w-1/3 border border-gray-300 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-red-500 text-sm sm:text-base"
+        />
+        <button
+          onClick={handleSearch}
+          className="w-full sm:w-auto bg-red-500 hover:bg-red-600 active:scale-95 text-white px-6 py-2 rounded-xl cursor-pointer transition text-sm sm:text-base font-medium"
+        >
+          Search
+        </button>
+      </div>
+
+      {/* Filter Dropdowns Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <select
+          value={bloodGroup}
+          onChange={(e) => setBloodGroup(e.target.value)}
+          className="w-full border border-gray-300 px-3 sm:px-4 py-2 rounded-lg bg-white outline-none focus:ring-2 focus:ring-red-500 text-sm sm:text-base"
+        >
+          <option value="all">All Blood Group</option>
+          {bloodGroups.map((blood) => (
+            <option key={blood} value={blood}>
+              {blood}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={district}
+          onChange={(e) => setDistrict(e.target.value)}
+          className="w-full border border-gray-300 px-3 sm:px-4 py-2 rounded-lg bg-white outline-none focus:ring-2 focus:ring-red-500 text-sm sm:text-base"
+        >
+          <option value="all">All District</option>
+          {allDistrict.map((allDistric) => (
+            <option key={allDistric} value={allDistric}>
+              {allDistric}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={upazila}
+          onChange={(e) => setUpazila(e.target.value)}
+          className="w-full border border-gray-300 px-3 sm:px-4 py-2 rounded-lg bg-white outline-none focus:ring-2 focus:ring-red-500 text-sm sm:text-base sm:col-span-2 lg:col-span-1"
+        >
+          <option value="all">All Upazila</option>
+          {[...new Set(allUpazila)].map((allUpazil) => (
+            <option key={allUpazil} value={allUpazil}>
+              {allUpazil}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Request Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {filteredRequest.map((filter) => (
+          <div
+            key={filter._id}
+            className="bg-white rounded-xl border border-red-200 p-5 sm:p-6 hover:border-red-500 shadow-md hover:shadow-lg transition flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex justify-between items-start gap-2 mb-4">
                 <div className="grid">
                   <p className="text-xs text-slate-500">Requester Name</p>
-                  <h2 className="font-bold text-lg">
-                  {filter.requesterName}
-                </h2>
+                  <h2 className="font-bold text-base sm:text-lg text-slate-800 break-words">
+                    {filter.requesterName}
+                  </h2>
                 </div>
-       <div>
-     <p className="text-xs text-slate-500">Blood Group</p>   
-         <p className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {filter.requesterBloodGroup}
-                </p>
-       </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-xs text-slate-500 mb-1">Blood Group</p>
+                  <span className="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                    {filter.requesterBloodGroup}
+                  </span>
+                </div>
               </div>
-              <div className="space-y-2 text-gray-600 text-sm">
+
+              <div className="space-y-1.5 text-gray-600 text-xs sm:text-sm">
                 <p>
-                  <strong>Location:</strong>{" "}
-                  {filter.requesterDistrict},{" "}
-                  {filter.requesterUpazila}
+                  <strong className="text-slate-700">Location:</strong>{" "}
+                  {filter.requesterDistrict}, {filter.requesterUpazila}
                 </p>
               </div>
-              <Link
-                href={`/blood/${filter._id}`}
-className="mt-5 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg"
-              >
-                <Eye size={18} />
-                View Details
-              </Link>
             </div>
-          ))}
-        </div>
-    </div>  )}
+
+            <Link
+              href={`/blood/${filter._id}`}
+              className="mt-5 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+            >
+              <Eye size={18} />
+              View Details
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
+  )}
+</div>
   );
 } 
